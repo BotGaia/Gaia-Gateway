@@ -10,7 +10,10 @@ router.get('/local/:endpoint', (req, res) => {
   });
 });
 
-router.get('/climate', (req, res) => {
+router.get('/climate/:endpoint', (req, res) => {
+  climate.getClimate(req.params.endpoint, req.query.place).then((climateJson) => {
+    res.json(climateJson);
+  });
 });
 
 router.post('/notification', (req, res) => {
