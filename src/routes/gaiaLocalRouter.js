@@ -13,8 +13,14 @@ module.exports = {
         });
 
         resp.on('end', () => {
-          resolve(JSON.parse(localData));
+          try {
+            resolve(JSON.parse(localData));
+          } catch (error) {
+            resolve(JSON.parse('{"cod": 400}'));
+          }
         });
+      }).on('error', () => {
+        resolve(JSON.parse('{"cod": 400}'));
       });
     });
   },
