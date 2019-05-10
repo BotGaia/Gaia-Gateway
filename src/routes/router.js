@@ -19,7 +19,7 @@ router.get('/climate/:endpoint', (req, res) => {
 
 router.post('/notification/:endpoint', (req, res) => {
   notification.postNotification(req.params.endpoint, req.body).then((response) => {
-  	res.json(response);
+    res.json(response);
   });
 });
 

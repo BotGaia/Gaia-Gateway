@@ -4,7 +4,6 @@ module.exports = {
   getClimate: (endpoint, place) => {
     let URL = '';
     let localData = '';
-
     if (endpoint === 'allSports') {
       URL = `http://68.183.43.29:30000/${endpoint}`;
     } else {
