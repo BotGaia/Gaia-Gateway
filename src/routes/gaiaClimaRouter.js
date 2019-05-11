@@ -4,10 +4,17 @@ module.exports = {
   getClimate: (endpoint, place) => {
     let URL = '';
     let localData = '';
+
+    if (process.env.ENVIRONMENT === 'dev') {
+      URL = `http://${process.env.IP_ADDRESS}:3000/`;
+    } else if (process.env.ENVIRONMENT === 'homolog') {
+      URL = 'http://68.183.43.29:30000/';
+    }
+
     if (endpoint === 'allSports') {
-      URL = `http://68.183.43.29:30000/${endpoint}`;
+      URL = `${URL}${endpoint}`;
     } else {
-      URL = `http://68.183.43.29:30000/${endpoint}?place=${place}`;
+      URL = `${URL}${endpoint}?place=${place}`;
     }
 
     return new Promise((resolve) => {

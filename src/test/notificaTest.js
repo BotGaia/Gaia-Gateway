@@ -4,6 +4,9 @@
 const chai = require('chai');
 const app = require('../index');
 const routes = require('../routes/router')(app);
+const notification = require('../routes/gaiaNotificaRouter');
+
+const should = chai.should();
 
 describe('/POST registerUser', () => {
   it('Register User', (done) => {
@@ -15,13 +18,12 @@ describe('/POST registerUser', () => {
       notificationTime: [''],
     };
     notification.postNotification('registerUser', mockJson).then((postData) => {
-      postData.should.have.status(200);
-      postData.body.should.be.a('object');
-      postData.body.user.telegramId.should.eql('testId2');
-      postData.body.user.sport.should.eql('');
-      postData.body.user.local.should.eql('');
-      postData.body.user.notificationDays.should.eql([['']]);
-      postData.body.user.notificationTime.should.eql([['']]);
+      postData.should.be.a('object');
+      postData.user.telegramId.should.eql('testId2');
+      postData.user.sport.should.eql('');
+      postData.user.local.should.eql('');
+      postData.user.notificationDays.should.eql([['']]);
+      postData.user.notificationTime.should.eql([['']]);
       done();
     });
   }).timeout(5000);

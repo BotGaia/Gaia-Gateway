@@ -2,7 +2,13 @@ const http = require('http');
 
 module.exports = {
   getLocal: (endpoint, address) => {
-    const URL = `http://68.183.43.29:31170/${endpoint}?address=${address}`;
+    let URL = '';
+
+    if (process.env.ENVIRONMENT === 'dev') {
+      URL = `http://${process.env.IP_ADDRESS}:3001/${endpoint}?address=${address}`;
+    } else if (process.env.ENVIRONMENT === 'homolog') {
+      URL = `http://68.183.43.29:30000/${endpoint}?address=${address}`;
+    }
 
     let localData = '';
 
