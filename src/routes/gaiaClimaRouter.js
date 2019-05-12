@@ -11,10 +11,10 @@ module.exports = {
       URL = 'http://68.183.43.29:30000/';
     }
 
-    if (endpoint === 'allSports') {
-      URL = `${URL}${endpoint}`;
-    } else {
+    if (place) {
       URL = `${URL}${endpoint}?place=${place}`;
+    } else {
+      URL = `${URL}${endpoint}`;
     }
 
     return new Promise((resolve) => {

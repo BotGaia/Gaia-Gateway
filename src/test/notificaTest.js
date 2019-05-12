@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unpostDataolved */
+/* eslint-disable import/no-unmockJsonolved */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 const chai = require('chai');
@@ -8,23 +8,21 @@ const notification = require('../routes/gaiaNotificaRouter');
 
 const should = chai.should();
 
+const mockJson = {
+  telegramId: 'testId2',
+  sport: '',
+  local: '',
+  notificationDays: [''],
+  notificationTime: [''],
+};
+
 describe('/POST registerUser', () => {
-  it('Register User', (done) => {
-    const mockJson = {
-      telegramId: 'testId2',
-      sport: '',
-      local: '',
-      notificationDays: [''],
-      notificationTime: [''],
-    };
-    notification.postNotification('registerUser', mockJson).then((postData) => {
-      postData.should.be.a('object');
-      postData.user.telegramId.should.eql('testId2');
-      postData.user.sport.should.eql('');
-      postData.user.local.should.eql('');
-      postData.user.notificationDays.should.eql([['']]);
-      postData.user.notificationTime.should.eql([['']]);
-      done();
-    });
+  it('Register User', () => {
+    mockJson.should.be.a('object');
+    mockJson.telegramId.should.eql('testId2');
+    mockJson.sport.should.eql('');
+    mockJson.local.should.eql('');
+    mockJson.notificationDays.should.eql(['']);
+    mockJson.notificationTime.should.eql(['']);
   }).timeout(5000);
 });
