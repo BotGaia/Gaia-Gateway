@@ -39,5 +39,7 @@ Para rodar a folha de estilo, utilize este comando:
 Aqui se encontra todos os endpoints desse serviço. Todos os endpoints se encontra em `localhost:3002`.
 
 |Requisição|Endpoint|Parâmetro:Tipo|Descrição|
-|:--------:|:------:|:------------:|:-------:|
-|-|-|-|-|
+|GET|/|-|Retorna todas as endpoints do microserviço.|
+|GET|/climate|climate: String,<br> sports: String,<br> allSports: String,<br> place: String|Redireciona as requisições de clima para o microsserviço de clima.|
+|GET|/local|local: String,<br> listLocales: String,<br> address: String|Redireciona as requisições de local para o microsserviço de local.|
+|POST|/notification|userRegister: String,<br> telegramId: String,<br> sport: String,<br> notificationDays: Array,<br> notificationTime: Array,<br> local: String|Redireciona as requisições de notificação para o microsserviço de notificação.|

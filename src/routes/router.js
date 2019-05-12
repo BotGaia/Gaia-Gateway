@@ -2,8 +2,13 @@ const express = require('express');
 const local = require('./gaiaLocalRouter');
 const climate = require('./gaiaClimaRouter');
 const notification = require('./gaiaNotificaRouter');
+const endpoints = require('../utils/endpoints');
 
 const router = express.Router();
+
+router.get('/', (req, res) => {
+  res.json(endpoints.getJson());
+});
 
 router.get('/local/:endpoint', (req, res) => {
   local.getLocal(req.params.endpoint, req.query.address).then((localJson) => {
