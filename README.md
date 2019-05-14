@@ -24,15 +24,15 @@ Após instalar o docker rode o projeto como desenvolvimento da seguinte maneira:
 
 Após o build, rode esse outro comando:
 
-```$ docker run --rm -it -p 3002:3002 -v $PWD:/app -v /app/node_modules gaiagateway```
+```$ sudo docker run --rm -it -p 3002:3002 -v $PWD:/app -v /app/node_modules gaiagateway```
 
 Para rodar os testes, utilize:
 
-``` $ docker run --rm -v $PWD:/app -v /app/node_modules gaiagateway /bin/sh -c "cd /app; npm run test" ```
+``` $ sudo docker run --rm -v $PWD:/app -v /app/node_modules gaiagateway npm run test ```
 
 Para rodar a folha de estilo, utilize este comando:
 
-``` $ docker run --rm -v $PWD:/app -v /app/node_modules gaiagateway /bin/sh -c "cd /app; npm run lint" ```
+``` $ sudo docker run --rm -v $PWD:/app -v /app/node_modules gaiagateway npm run lint ```
 
 ### Endpoints
 
