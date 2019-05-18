@@ -44,7 +44,7 @@ module.exports = {
         description: 'Redirects locale requests to the locale microservice',
       },
       {
-        type: 'POSt',
+        type: 'POST',
         endpoint: '/notification',
         parameters: [
           {
