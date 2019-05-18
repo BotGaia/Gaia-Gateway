@@ -42,17 +42,18 @@ function sportRecommendation(conditions, notification, index) {
 }
 
 function setClimateMessages(messages, conditions) {
-  messages.push(`Para essa data, neste local, minha temperatura é ${conditions.weather.temperature} °C,`);
-  messages.push(`com umidade de ${conditions.weather.humidity}%`);
-  messages.push(`e pressão ${conditions.weather.pressure} atm.`);
-  messages.push(`Meus ventos sopram para ${conditions.weather.windyDegrees},`);
-  messages.push(`com velocidade de ${conditions.weather.windySpeed} m/s`);
-  messages.push(`e apresento ${conditions.weather.sky}.`);
+  new Promise((resolve) => {
+    messages.push(`Para essa data, neste local, minha temperatura é ${conditions.weather.temperature} °C,`);
+    messages.push(`com umidade de ${conditions.weather.humidity}%`);
+    messages.push(`e pressão ${conditions.weather.pressure} atm.`);
+    messages.push(`Meus ventos sopram para ${conditions.weather.windyDegrees},`);
+    messages.push(`com velocidade de ${conditions.weather.windySpeed} m/s`);
+    messages.push(`e apresento ${conditions.weather.sky}.`);
+  });
 }
 
 module.exports = {
   sendNotification: (notification) => new Promise((resolve) => {
-    const messages = [];
 
     if (process.env.ENVIRONMENT === 'dev') {
       URL = `http://${process.env.IP_ADDRESS}:3000/sportForecast`;
@@ -60,16 +61,18 @@ module.exports = {
       URL = 'https://clima.hml.botgaia.ga/sportForecast';
     }
 
-    axios.post(URL, notification).then((response) => {
-      response.data.forEach((conditions, index) => {
-        sendMessage(sportRecommendation(conditions, notification, index), notification);
+    axios.post(URL, notification).then(async (response) => {
+      const messages = [];
 
-        setClimateMessages(messages, conditions);
+      for (let index in response.data) {
+        await sendMessage(sportRecommendation(response.data[index], notification, index), notification);
 
-        messages.forEach((message) => {
-          sendMessage(message, notification);
-        });
-      });
+        await setClimateMessages(messages, response.data[index]);
+
+        for (let messageIndex in messages) {
+          await sendMessage(messages[messageIndex], notification);
+        }
+      }
     });
   }),
 };
