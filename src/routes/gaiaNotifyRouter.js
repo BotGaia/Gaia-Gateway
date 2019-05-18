@@ -54,6 +54,7 @@ function setClimateMessages(messages, conditions) {
 
 module.exports = {
   sendNotification: (notification) => new Promise((resolve) => {
+    let messages = [];
 
     if (process.env.ENVIRONMENT === 'dev') {
       URL = `http://${process.env.IP_ADDRESS}:3000/sportForecast`;
@@ -62,16 +63,15 @@ module.exports = {
     }
 
     axios.post(URL, notification).then(async (response) => {
-      const messages = [];
 
       for (let index in response.data) {
         await sendMessage(sportRecommendation(response.data[index], notification, index), notification);
 
         await setClimateMessages(messages, response.data[index]);
-
         for (let messageIndex in messages) {
           await sendMessage(messages[messageIndex], notification);
         }
+        messages = [];
       }
     });
   }),
