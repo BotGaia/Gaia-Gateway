@@ -16,22 +16,59 @@ function sendMessage(message, notification) {
     });
 }
 
+function sportRecommendation(conditions, notification, index) {
+  switch (conditions.sportResult) {
+    case 'favorable':
+      return `As condições metereológicas previstas para ${notification.day}/
+        ${notification.month} em ${notification.locals[index]} estão favoráveis
+        para a prática de ${notification.sport}.`;
+      break;
+    case 'reservation':
+      return `Algumas condições metereológicas previstas para ${notification.day}/
+        ${notification.month} em ${notification.locals[index]} estão favoráveis
+        para a prática de ${notification.sport}.`;
+      break;
+    case 'alert':
+      return `Poucas condições metereológicas previstas para ${notification.day}/
+        ${notification.month} em ${notification.locals[index]} estão favoráveis
+        para a prática de ${notification.sport}.`;
+      break;
+    case 'not':
+      return `Para ${notification.day}/${notification.month} em ${notification.locals[index]}
+        não é recomendada prática de ${notification.sport}.`;
+      break;
+    default:
+  }
+}
+
+function setClimateMessages(messages, conditions) {
+  messages.push(`Para essa data, neste local, minha temperatura é ${conditions.weather.temperature} °C,`);
+  messages.push(`com umidade de ${conditions.weather.humidity}%`);
+  messages.push(`e pressão ${conditions.weather.pressure} atm.`);
+  messages.push(`Meus ventos sopram para ${conditions.weather.windyDegrees},`);
+  messages.push(`com velocidade de ${conditions.weather.windySpeed} m/s`);
+  messages.push(`e apresento ${conditions.weather.sky}.`);
+}
+
 module.exports = {
   sendNotification: (notification) => new Promise((resolve) => {
-    const messageOne = 'This is a';
-    const messageTwo = 'notification';
+    const messages = [];
 
-    sendMessage(messageOne, notification).then((response) => {
-      if(response.code === 400) {
-        resolve({ok: "false"});
-      }
+    if (process.env.ENVIRONMENT === 'dev') {
+      URL = `http://${process.env.IP_ADDRESS}:3000/sportForecast`;
+    } else if (process.env.ENVIRONMENT === 'homolog') {
+      URL = 'https://clima.hml.botgaia.ga/sportForecast';
+    }
 
-      sendMessage(messageTwo, notification).then((response2) => {
-        if(response2.code === 400) {
-          resolve({ok: "false"});
-        }
+    axios.post(URL, notification).then((response) => {
+      response.data.forEach((conditions, index) => {
+        sendMessage(sportRecommendation(conditions, notification, index), notification);
 
-        resolve({ok: "true"});
+        setClimateMessages(messages, conditions);
+
+        messages.forEach((message) => {
+          sendMessage(message, notification);
+        });
       });
     });
   }),
