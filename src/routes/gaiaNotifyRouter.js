@@ -8,6 +8,7 @@ function sendMessage(message, notification) {
       chat_id: notification.telegramId,
       text: message,
     };
+
     axios.get(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, { params })
       .then((res) => {
         resolve(res.data);

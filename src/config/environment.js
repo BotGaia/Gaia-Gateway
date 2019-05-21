@@ -1,4 +1,3 @@
-
 module.exports = {
   configClimate: () => {
     if (process.env.ENVIRONMENT === 'dev') {
