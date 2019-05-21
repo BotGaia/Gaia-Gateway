@@ -29,7 +29,7 @@ router.post('/notification/:endpoint', (req, res) => {
   });
 });
 
-router.post('/notify', (req, res) => {
+router.post('/notifyUser', (req, res) => {
   notify.sendNotification(req.body).then((response) => {
     res.json(response);
   });

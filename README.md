@@ -43,4 +43,4 @@ Aqui se encontra todos os endpoints desse serviço. Todos os endpoints se encont
 |GET|/|-|Retorna todas as endpoints do microserviço.|
 |GET|/climate|climate: String,<br> sports: String,<br> allSports: String,<br> place: String|Redireciona as requisições de clima para o microsserviço de clima.|
 |GET|/local|local: String,<br> listLocales: String,<br> address: String|Redireciona as requisições de local para o microsserviço de local.|
-|POST|/notification|userRegister: String,<br> telegramId: String,<br> sport: String,<br> notificationDays: Array,<br> notificationTime: Array,<br> local: String|Redireciona as requisições de notificação para o microsserviço de notificação.|
+|POST|/notification|createNotification: String,<br> telegramId: String,<br> sport: String,<br> days: Array,<br> hour: Integer,<br> locals: Array,<br> minutes: Integer,<br> hoursBefore: Integer,<br> minutesBefore: Integer |Redireciona as requisições de notificação para o microsserviço de notificação.|

@@ -8,7 +8,7 @@ module.exports = {
     if (process.env.ENVIRONMENT === 'dev') {
       URL = `http://${process.env.IP_ADDRESS}:3001/${endpoint}?address=${address}`;
     } else if (process.env.ENVIRONMENT === 'homolog') {
-      URL = `http://68.183.43.29:30000/${endpoint}?address=${address}`;
+      URL = `http://local.hml.botgaia.ga/${endpoint}?address=${address}`;
     }
 
     return new Promise((resolve) => {

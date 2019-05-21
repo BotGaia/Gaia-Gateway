@@ -48,7 +48,7 @@ module.exports = {
         endpoint: '/notification',
         parameters: [
           {
-            name: 'userRegister',
+            name: 'createNotification',
             type: 'string',
           },
           {
@@ -60,16 +60,28 @@ module.exports = {
             type: 'string',
           },
           {
-            name: 'notificationDays',
-            type: 'string',
+            name: 'days',
+            type: 'array',
           },
           {
-            name: 'notificationTime',
-            type: 'string',
+            name: 'hour',
+            type: 'integer',
           },
           {
-            name: 'local',
-            type: 'string',
+            name: 'locals',
+            type: 'array',
+          },
+          {
+            name: 'minutes',
+            type: 'integer',
+          },
+          {
+            name: 'hoursBefore',
+            type: 'integer',
+          },
+          {
+            name: 'minutesBefore',
+            type: 'integer',
           },
         ],
         description: 'Redirects locale notification to the notification microservice',
