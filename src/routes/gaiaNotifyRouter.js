@@ -57,13 +57,12 @@ module.exports = {
     let messages = [];
 
     if (process.env.ENVIRONMENT === 'dev') {
-      URL = `http://${process.env.IP_ADDRESS}:3000/sportForecast`;
+      URL = `http://192.168.25.227:3000/sportForecast`;
     } else if (process.env.ENVIRONMENT === 'homolog') {
       URL = 'https://clima.hml.botgaia.ga/sportForecast';
     }
 
     axios.post(URL, notification).then(async (response) => {
-
       for (let index in response.data) {
         await sendMessage(sportRecommendation(response.data[index], notification, index), notification);
 
@@ -73,6 +72,7 @@ module.exports = {
         }
         messages = [];
       }
+      resolve(response.data)
     });
   }),
 };
