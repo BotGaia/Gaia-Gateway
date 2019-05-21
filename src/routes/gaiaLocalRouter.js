@@ -2,14 +2,8 @@ const http = require('http');
 
 module.exports = {
   getLocal: (endpoint, address) => {
-    let URL = '';
+    const URL = `${global.URL_LOCAL}/${endpoint}?address=${address}`;
     let localData = '';
-
-    if (process.env.ENVIRONMENT === 'dev') {
-      URL = `http://${process.env.IP_ADDRESS}:3001/${endpoint}?address=${address}`;
-    } else if (process.env.ENVIRONMENT === 'homolog') {
-      URL = `http://local.hml.botgaia.ga/${endpoint}?address=${address}`;
-    }
 
     return new Promise((resolve) => {
       http.get(URL, (resp) => {

@@ -61,7 +61,7 @@ module.exports = {
           },
           {
             name: 'days',
-            type: 'array',
+            type: 'integer array',
           },
           {
             name: 'hour',
@@ -69,7 +69,7 @@ module.exports = {
           },
           {
             name: 'locals',
-            type: 'array',
+            type: 'string array',
           },
           {
             name: 'minutes',
