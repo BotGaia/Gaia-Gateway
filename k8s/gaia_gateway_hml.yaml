@@ -25,14 +25,8 @@ spec:
     spec:
       containers:
       - env:
-        - name: DB
-          value: {{DB}}
         - name: ENVIRONMENT
           value: homolog
-        - name: PASS_DB
-          value: {{PASS_DB}}
-        - name: USER_DB
-          value: {{USER_DB}}
         image: caleberios/gaia-gateway:homolog
         imagePullPolicy: Always
         name: gaia-gateway-hml
