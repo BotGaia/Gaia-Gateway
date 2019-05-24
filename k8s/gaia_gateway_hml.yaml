@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gaia-gateway-hml
+spec:
+  ports:
+  - port: 443
+    targetPort: 3002
+  selector:
+    app: gaia-gateway-hml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gaia-gateway-hml
+spec:
+  selector:
+    matchLabels:
+      app: gaia-gateway-hml
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gaia-gateway-hml
+    spec:
+      containers:
+      - env:
+        - name: DB
+          value: {{DB}}
+        - name: ENVIRONMENT
+          value: homolog
+        - name: PASS_DB
+          value: {{PASS_DB}}
+        - name: USER_DB
+          value: {{USER_DB}}
+        image: caleberios/gaia-gateway:homolog
+        imagePullPolicy: Always
+        name: gaia-gateway-hml
+        ports:
+        - containerPort: 3002
