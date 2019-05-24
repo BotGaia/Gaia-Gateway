@@ -33,7 +33,7 @@ testCheck:
 
 staticAnalysis:
   stage: quality
-  stage: node:alpine
+  image: node:alpine
   script:
     - npm install
     - npm run lint
