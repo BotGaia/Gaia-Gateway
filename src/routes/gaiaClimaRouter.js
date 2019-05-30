@@ -6,9 +6,9 @@ module.exports = {
     let localData = '';
 
     if (place) {
-      URL = `${global.URL_CLIMATE}/${endpoint}?place=${place}`;
+      URL = `${global.URL_SPORT}/${endpoint}?place=${place}`;
     } else {
-      URL = `${global.URL_CLIMATE}/${endpoint}`;
+      URL = `${global.URL_SPORT}/${endpoint}`;
     }
 
     return new Promise((resolve) => {

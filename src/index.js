@@ -8,9 +8,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-environment.configClimate();
-environment.configLocal();
-environment.configNotify();
+environment.configSport();
 
 require('./routes/router')(app);
 

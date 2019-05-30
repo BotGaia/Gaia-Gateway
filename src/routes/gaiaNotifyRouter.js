@@ -52,7 +52,7 @@ function setClimateMessages(messages, conditions) {
 module.exports = {
   sendNotification: notification => new Promise((resolve) => {
     let messages = [];
-    const postURL = `${global.URL_CLIMATE}/sportForecast`;
+    const postURL = `${global.URL_SPORT}/sportForecast`;
 
     axios.post(postURL, notification).then(async (res) => {
       for (const index in res.data) {
