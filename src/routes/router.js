@@ -2,6 +2,7 @@ const express = require('express');
 const local = require('./gaiaLocalRouter');
 const climate = require('./gaiaClimaRouter');
 const notification = require('./gaiaNotificaRouter');
+const notify = require('./gaiaNotifyRouter');
 const endpoints = require('../utils/endpoints');
 
 const router = express.Router();
@@ -24,6 +25,12 @@ router.get('/climate/:endpoint', (req, res) => {
 
 router.post('/notification/:endpoint', (req, res) => {
   notification.postNotification(req.params.endpoint, req.body).then((response) => {
+    res.json(response);
+  });
+});
+
+router.post('/notifyUser', (req, res) => {
+  notify.sendNotification(req.body).then((response) => {
     res.json(response);
   });
 });

@@ -44,11 +44,11 @@ module.exports = {
         description: 'Redirects locale requests to the locale microservice',
       },
       {
-        type: 'POSt',
+        type: 'POST',
         endpoint: '/notification',
         parameters: [
           {
-            name: 'userRegister',
+            name: 'createNotification',
             type: 'string',
           },
           {
@@ -60,16 +60,28 @@ module.exports = {
             type: 'string',
           },
           {
-            name: 'notificationDays',
-            type: 'string',
+            name: 'days',
+            type: 'array<integer>',
           },
           {
-            name: 'notificationTime',
-            type: 'string',
+            name: 'hour',
+            type: 'integer',
           },
           {
-            name: 'local',
-            type: 'string',
+            name: 'locals',
+            type: 'array<string>',
+          },
+          {
+            name: 'minutes',
+            type: 'integer',
+          },
+          {
+            name: 'hoursBefore',
+            type: 'integer',
+          },
+          {
+            name: 'minutesBefore',
+            type: 'integer',
           },
         ],
         description: 'Redirects locale notification to the notification microservice',
