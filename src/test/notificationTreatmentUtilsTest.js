@@ -8,7 +8,7 @@ const should = chai.should();
 
 describe('NOTIFICATION TREATMENT UTILS', () => {
   it('should convert days to integers', () => {
-    const days = ["segunda", "sábado"];
+    const days = ['segunda', 'sábado'];
     const convertedDays = notification.convertDay(days);
 
     convertedDays.should.be.a('Array');
@@ -18,7 +18,7 @@ describe('NOTIFICATION TREATMENT UTILS', () => {
   }).timeout(5000);
 
   it('should convert a string to an integer', () => {
-    const hourString = "11 horas";
+    const hourString = '11 horas';
     const hourInteger = notification.convertTimeBefore(hourString);
 
     hourInteger.should.be.a('Number');
