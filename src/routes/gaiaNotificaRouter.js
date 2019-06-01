@@ -7,7 +7,10 @@ module.exports = {
   postNotification: (endpoint, json) => new Promise((resolve) => {
     const URL = `${global.URL_SPORT}/${endpoint}`;
     const dataJson = json;
+    const daysArray = [];
 
+    daysArray.push(dataJson);
+    dataJson.days = daysArray;
     dataJson.days = notification.convertDay(dataJson.days);
     dataJson.hoursBefore = notification.convertTimeBefore(dataJson.hoursBefore);
     dataJson.minutesBefore = notification.convertTimeBefore(dataJson.minutesBefore);
