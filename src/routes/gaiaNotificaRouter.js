@@ -11,8 +11,10 @@ module.exports = {
     dataJson.days = notification.convertDay(dataJson.days);
     dataJson.hoursBefore = notification.convertTimeBefore(dataJson.hoursBefore);
     dataJson.minutesBefore = notification.convertTimeBefore(dataJson.minutesBefore);
+    dataJson.hour = parseInt(dataJson.hour, 10);
+    dataJson.minutes = parseInt(dataJson.minutes, 10);
 
-    axios.post(URL, json).then((res) => {
+    axios.post(URL, dataJson).then((res) => {
       resolve(res.data);
     }).catch(() => {
       resolve(JSON.parse('{"cod": 400}'));
