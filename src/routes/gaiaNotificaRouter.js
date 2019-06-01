@@ -8,9 +8,18 @@ module.exports = {
     const URL = `${global.URL_SPORT}/${endpoint}`;
     const dataJson = json;
     const daysArray = [];
+    const localsArray = [];
 
-    daysArray.push(dataJson);
-    dataJson.days = daysArray;
+    if (typeof dataJson.days !== 'object') {
+      daysArray.push(dataJson.days);
+      dataJson.days = daysArray;
+    }
+
+    if (typeof dataJson.locals !== 'object') {
+      localsArray.push(dataJson.locals);
+      dataJson.locals = localsArray;
+    }
+
     dataJson.days = notification.convertDay(dataJson.days);
     dataJson.hoursBefore = notification.convertTimeBefore(dataJson.hoursBefore);
     dataJson.minutesBefore = notification.convertTimeBefore(dataJson.minutesBefore);
