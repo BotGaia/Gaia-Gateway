@@ -3,32 +3,36 @@ module.exports = {
     const answerArray = [];
 
     dayArray.forEach((day) => {
-      if ((day === 'segunda') || (day === 'segunda-feira')) {
-        answerArray.push(1);
-      }
-
-      if ((day === 'terça') || (day === 'terça-feira')) {
-        answerArray.push(2);
-      }
-
-      if ((day === 'quarta') || (day === 'quarta-feira')) {
-        answerArray.push(3);
-      }
-
-      if ((day === 'quinta') || (day === 'quinta-feira')) {
-        answerArray.push(4);
-      }
-
-      if ((day === 'sexta') || (day === 'sexta-feira')) {
-        answerArray.push(5);
-      }
-
-      if ((day === 'sábado') || (day === 'sabado')) {
-        answerArray.push(6);
-      }
-
-      if (day === 'domingo') {
-        answerArray.push(0);
+      switch (day.toLowerCase()) {
+        case 'segunda':
+        case 'segunda-feira':
+          answerArray.push(1);
+          break;
+        case 'terça':
+        case 'terça-feira':
+          answerArray.push(2);
+          break;
+        case 'quarta':
+        case 'quarta-feira':
+          answerArray.push(3);
+          break;
+        case 'quinta':
+        case 'quinta-feira':
+          answerArray.push(4);
+          break;
+        case 'sexta':
+        case 'sexta-feira':
+          answerArray.push(5);
+          break;
+        case 'sábado':
+        case 'sabado':
+          answerArray.push(6);
+          break;
+        case 'domingo':
+          answerArray.push(0);
+          break;
+        default:
+          break;
       }
     });
 
