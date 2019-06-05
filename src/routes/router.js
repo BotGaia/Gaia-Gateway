@@ -8,29 +8,25 @@ const endpoints = require('../utils/endpoints');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  res.json(endpoints.getJson());
+  if (req.query.address) {
+	  local.getLocal('listLocales', req.query.address).then((localJson) => {
+		  res.json(localJson);
+	  });
+  } else if (req.query.place && req.query.intent === 'climate') {
+	  climate.getClimate('climate', req.query.place).then((climateJson) => {
+		  res.json(climateJson);
+	  });
+  } else if (req.query.place && req.query.intent === 'sport') {
+	  climate.getClimate('sports', req.query.place).then((climateJson) => {
+		  res.json(climateJson);
+	  });
+  } else {
+	  res.json(endpoints.getJson());
+  }
 });
 
-router.get('/local/:endpoint', (req, res) => {
-  local.getLocal(req.params.endpoint, req.query.address).then((localJson) => {
-    res.json(localJson);
-  });
-});
-
-router.get('/climate/:endpoint', (req, res) => {
-  climate.getClimate(req.params.endpoint, req.query.place).then((climateJson) => {
-    res.json(climateJson);
-  });
-});
-
-router.post('/notification/:endpoint', (req, res) => {
-  notification.postNotification(req.params.endpoint, req.body).then((response) => {
-    res.json(response);
-  });
-});
-
-router.post('/notifyUser', (req, res) => {
-  notify.sendNotification(req.body).then((response) => {
+router.post('/', (req, res) => {
+  notification.postNotification('createNotification', req.body).then((response) => {
     res.json(response);
   });
 });
