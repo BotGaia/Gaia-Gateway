@@ -26,9 +26,17 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  notification.postNotification(req.body).then((response) => {
-    res.json(response);
-  });
+  if (req.body.date) {
+    notify.sendNotification(req.body).then((response) => {
+      res.json(response);
+    });
+  } else if (req.body.hoursBefore) {
+    notification.postNotification(req.body).then((response) => {
+      res.json(response);
+    });
+  } else {
+    res.json(endpoints.getJson());
+  }
 });
 
 module.exports = app => app.use('/', router);
