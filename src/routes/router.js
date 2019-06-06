@@ -33,16 +33,22 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  if (req.body.date) {
-    notify.sendNotification(req.body).then((response) => {
-      res.json(response);
-    });
-  } else if (req.body.hoursBefore) {
-    notification.postNotification(req.body).then((response) => {
-      res.json(response);
-    });
+  const authenticationResponse = authentication.postAuthentication(req.body);
+
+  if (!authenticationResponse) {
+    if (req.body.date) {
+      notify.sendNotification(req.body).then((response) => {
+        res.json(response);
+      });
+    } else if (req.body.hoursBefore) {
+      notification.postNotification(req.body).then((response) => {
+        res.json(response);
+      });
+    } else {
+      res.json(endpoints.getJson());
+    }
   } else {
-    res.json(endpoints.getJson());
+    res.end(authenticationResponse);
   }
 });
 
