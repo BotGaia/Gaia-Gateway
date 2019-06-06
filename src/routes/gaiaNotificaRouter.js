@@ -4,8 +4,8 @@ const notification = require('../utils/notificationTreatmentUtils');
 require('../config/environment');
 
 module.exports = {
-  postNotification: (endpoint, json) => new Promise((resolve) => {
-    const URL = `${global.URL_SPORT}/${endpoint}`;
+  postNotification: (json) => new Promise((resolve) => {
+    const URL = `${global.URL_SPORT}/createNotification`;
     const dataJson = json;
     const daysArray = [];
     const localsArray = [];

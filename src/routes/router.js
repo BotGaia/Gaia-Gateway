@@ -9,15 +9,15 @@ const router = express.Router();
 
 router.get('/', (req, res) => {
   if (req.query.address) {
-	  local.getLocal('listLocales', req.query.address).then((localJson) => {
+	  local.getLocal(req.query.address).then((localJson) => {
 		  res.json(localJson);
 	  });
   } else if (req.query.place && req.query.intent === 'climate') {
-	  climate.getClimate('climate', req.query.place).then((climateJson) => {
+	  climate.getClimate(req.query.intent, req.query.place).then((climateJson) => {
 		  res.json(climateJson);
 	  });
-  } else if (req.query.place && req.query.intent === 'sport') {
-	  climate.getClimate('sports', req.query.place).then((climateJson) => {
+  } else if (req.query.place && req.query.intent === 'sports') {
+	  climate.getClimate(req.query.intent, req.query.place).then((climateJson) => {
 		  res.json(climateJson);
 	  });
   } else {
@@ -26,7 +26,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  notification.postNotification('createNotification', req.body).then((response) => {
+  notification.postNotification(req.body).then((response) => {
     res.json(response);
   });
 });

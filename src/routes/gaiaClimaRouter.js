@@ -1,15 +1,9 @@
 const http = require('http');
 
 module.exports = {
-  getClimate: (endpoint, place) => {
-    let URL = '';
+  getClimate: (intent, place) => {
+    let URL = `${global.URL_SPORT}/${intent}?place=${place}`;
     let localData = '';
-
-    if (place) {
-      URL = `${global.URL_SPORT}/${endpoint}?place=${place}`;
-    } else {
-      URL = `${global.URL_SPORT}/${endpoint}`;
-    }
 
     return new Promise((resolve) => {
       http.get(URL, (resp) => {

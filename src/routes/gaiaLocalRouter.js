@@ -1,8 +1,8 @@
 const http = require('http');
 
 module.exports = {
-  getLocal: (endpoint, local) => {
-    const URL = `${global.URL_SPORT}/${endpoint}?local=${local}`;
+  getLocal: (local) => {
+    const URL = `${global.URL_SPORT}/listLocales?local=${local}`;
     let localData = '';
 
     return new Promise((resolve) => {
