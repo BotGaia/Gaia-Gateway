@@ -16,48 +16,23 @@ module.exports = {
   },
   postAuthentication: (body) => {
     let errorMessage = '';
+    const parameters = [{parameter: "telegramId", type: "string"},
+      {parameter: "hoursBefore", type: "number"}, {parameter: "minutesBefore", type: "number"},
+      {parameter: "hour", type: "number"}, {parameter: "minutes", type: "number"},
+      {parameter: "sport", type: "string"}, {parameter: "days", type: "object"},
+      {parameter: "locals", type: "object"}];
+ 
+    parameters.forEach((value) => {
+      if (typeof(body[value.parameter]) !== value.type) {
+        if (typeof(body[value.parameter]) === 'undefined') {
+          errorMessage = `${errorMessage}BodyError: Missing non-optional property '${value.parameter}'\n`;
+        } else {
+          errorMessage = `${errorMessage}BodyError: '${value.parameter}' should be ${value.type}, but is actually a ${typeof(body[value.parameter])}.\n`;  
+        }
+      }
+    });
 
-    if (!body.telegramId) {
-      errorMessage = `${errorMessage}BodyError: Missing non-optional property 'telegramId'\n`;
-    }
-
-    if (!body.days) {
-      errorMessage = `${errorMessage}BodyError: Missing non-optional property 'days'\n`;
-    }
-
-    if (!body.hoursBefore) {
-      errorMessage = `${errorMessage}BodyError: Missing non-optional property 'hoursBefore'\n`;
-    }
-
-    if (!body.minutesBefore) {
-      errorMessage = `${errorMessage}BodyError: Missing non-optional parameter 'minutesBefore'\n`;
-    }
-
-    if (!body.hour) {
-      errorMessage = `${errorMessage}BodyError: Missing non-optional parameter 'hour'\n`;
-    }
-
-    if (!body.minutes) {
-      errorMessage = `${errorMessage}BodyError: Missing non-optional parameter 'minutes'\n`;
-    }
-
-    if (!body.sport) {
-      errorMessage = `${errorMessage}BodyError: Missing non-optional parameter 'sport'\n`;
-    }
-
-    if (!body.locals) {
-      errorMessage = `${errorMessage}BodyError: Missing non-optional parameter 'locals'\n`;
-    }
-
-    if (typeof(body.days) !== 'object') {
-      errorMessage = `${errorMessage}DaysError: 'days' should be an Array, but is actually a ${typeof(body.days)}.\n`;
-    }
-
-    if (typeof(body.locals) !== 'object') {
-      errorMessage = `${errorMessage}LocalsError: 'locals' should be an Array, but is actually a ${typeof(body.locals)}.\n`;
-    }
-
-    if (body.days) {
+    if (typeof(body.days) === 'object') {
       body.days.forEach((day) => {
         if((typeof(day) !== 'number') && (typeof(day) !== 'string')) {
           errorMessage = `${errorMessage}DaysError: 'days' should contain Numbers or Strings, but instead contains ${typeof(day)}.\n`;
@@ -65,7 +40,7 @@ module.exports = {
       });
     }
 
-    if (body.locals) {
+    if (typeof(body.locals) === 'object') {
       body.locals.forEach((local) => {
         if(typeof(local) !== 'string') {
           errorMessage = `${errorMessage}LocalsError: 'locals' should contain Strings, but instead contains ${typeof(local)}.\n`;
