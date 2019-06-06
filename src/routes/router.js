@@ -4,24 +4,31 @@ const climate = require('./gaiaClimaRouter');
 const notification = require('./gaiaNotificaRouter');
 const notify = require('./gaiaNotifyRouter');
 const endpoints = require('../utils/endpoints');
+const authentication = require('../utils/requestAuthenticationUtils');
 
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  if (req.query.address) {
-    local.getLocal(req.query.address).then((localJson) => {
-      res.json(localJson);
-    });
-  } else if (req.query.place && req.query.intent === 'climate') {
-    climate.getClimate(req.query.intent, req.query.place).then((climateJson) => {
-      res.json(climateJson);
-    });
-  } else if (req.query.place && req.query.intent === 'sports') {
-    climate.getClimate(req.query.intent, req.query.place).then((climateJson) => {
-      res.json(climateJson);
-    });
+  const authenticationResponse = authentication.getAuthentication(req.query);
+
+  if (!authenticationResponse) {
+    if (req.query.address) {
+      local.getLocal(req.query.address).then((localJson) => {
+        res.json(localJson);
+      });
+    } else if (req.query.place && req.query.intent === 'climate') {
+      climate.getClimate(req.query.intent, req.query.place).then((climateJson) => {
+        res.json(climateJson);
+      });
+    } else if (req.query.place && req.query.intent === 'sports') {
+      climate.getClimate(req.query.intent, req.query.place).then((climateJson) => {
+        res.json(climateJson);
+      });
+    } else {
+      res.json(endpoints.getJson());
+    }
   } else {
-    res.json(endpoints.getJson());
+    res.end(authenticationResponse);
   }
 });
 

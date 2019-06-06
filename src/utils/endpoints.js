@@ -57,7 +57,7 @@ module.exports = {
             type: 'integer',
           },
         ],
-        description: 'Redirects POST requests to Gaia-Esporte createNotification route',
+        description: 'Redirects POST requests to Gaia-Esporte createNotification or Gaia-Gateway Notify route',
       },
     ];
     return endpoints;
