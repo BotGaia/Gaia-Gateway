@@ -24,6 +24,17 @@ router.get('/', (req, res) => {
       climate.getClimate(req.query.intent, req.query.place).then((climateJson) => {
         res.json(climateJson);
       });
+    } else if (req.query.id) {
+      if (req.query.number) {
+        notification.deleteNotification(req.query.id, req.query.number)
+          .then((notificationResponse) => {
+            res.json(notificationResponse);
+          });
+      } else {
+        notification.getNotification(req.query.id).then((notifications) => {
+          res.json(notifications);
+        });
+      }
     } else {
       res.json(endpoints.getJson());
     }
