@@ -6,7 +6,7 @@ module.exports = {
         endpoint: '/',
         parameters: [
           {
-            name: 'address',
+            name: 'local',
             type: 'string',
           },
           {

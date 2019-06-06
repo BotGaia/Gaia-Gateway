@@ -12,8 +12,8 @@ router.get('/', (req, res) => {
   const authenticationResponse = authentication.getAuthentication(req.query);
 
   if (!authenticationResponse) {
-    if (req.query.address) {
-      local.getLocal(req.query.address).then((localJson) => {
+    if (req.query.local) {
+      local.getLocal(req.query.local).then((localJson) => {
         res.json(localJson);
       });
     } else if (req.query.place && req.query.intent === 'climate') {
