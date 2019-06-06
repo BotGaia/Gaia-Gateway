@@ -40,7 +40,5 @@ Aqui se encontra todos os endpoints desse serviço. Todos os endpoints se encont
 
 |Requisição|Endpoint|Parâmetro:Tipo|Descrição|
 |:--------:|:------:|:------------:|:-------:|
-|GET|/|-|Retorna todas as endpoints do microserviço.|
-|GET|/climate|climate: String,<br> sports: String,<br> allSports: String,<br> place: String|Redireciona as requisições de clima para o microsserviço de clima.|
-|GET|/local|local: String,<br> listLocales: String,<br> address: String|Redireciona as requisições de local para o microsserviço de local.|
-|POST|/notification|createNotification: String,<br> telegramId: String,<br> sport: String,<br> days: Array<Integer>,<br> hour: Integer,<br> locals: Array<String>,<br> minutes: Integer,<br> hoursBefore: Integer,<br> minutesBefore: Integer |Redireciona as requisições de notificação para o microsserviço de notificação.|
+|GET|/|address: String,<br> place: String,<br> intent: String,<br> id: String,<br>number: Number|Redireciona requisições GET para Gaia-Esporte de acordo com os parâmetros|
+|POST|/|telegramId: String,<br> sport: String,<br> days: Array\<String>,<br> hour: Integer,<br> locals: Array\<String>,<br> minutes: Integer,<br> hoursBefore: Integer,<br> minutesBefore: Integer,<br> class: String,<br> date: String|Redireciona requisições POST para as rotas createNotification em Gaia-Esporte ou notify de acordo com os parâmetros|

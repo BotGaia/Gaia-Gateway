@@ -17,6 +17,14 @@ module.exports = {
             name: 'intent',
             type: 'string',
           },
+          {
+            name: 'id',
+            type: 'string',
+          },
+          {
+            name: 'number',
+            type: 'number',
+          },
         ],
         description: 'Redirects GET requests according to parameters given',
       },
@@ -55,6 +63,14 @@ module.exports = {
           {
             name: 'minutesBefore',
             type: 'integer',
+          },
+          {
+            name: 'class',
+            type: 'string',
+          },
+          {
+            name: 'date',
+            type: 'string',
           },
         ],
         description: 'Redirects POST requests to Gaia-Esporte createNotification or Gaia-Gateway Notify route',
