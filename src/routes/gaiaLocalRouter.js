@@ -1,26 +1,19 @@
-const http = require('http');
+const axios = require('axios');
 
 module.exports = {
   getLocal: (local) => {
-    const URL = `${global.URL_SPORT}/listLocales?local=${local}`;
-    let localData = '';
+    const URL = `${global.URL_SPORT}/listLocales`;
+    const params = {
+      local,
+    };
 
     return new Promise((resolve) => {
-      http.get(URL, (resp) => {
-        resp.on('data', (chungus) => {
-          localData += chungus;
+      axios.get(URL, { params })
+        .then((response) => {
+          resolve(response.data);
+        }).catch(() => {
+          resolve(JSON.parse('{"cod": 400}'));
         });
-
-        resp.on('end', () => {
-          try {
-            resolve(JSON.parse(localData));
-          } catch (error) {
-            resolve(JSON.parse('{"cod": 400}'));
-          }
-        });
-      }).on('error', () => {
-        resolve(JSON.parse('{"cod": 400}'));
-      });
     });
   },
 };

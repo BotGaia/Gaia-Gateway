@@ -23,7 +23,9 @@ module.exports = {
       { parameter: 'locals', type: 'object' }];
 
     parameters.forEach((value) => {
-      if (typeof (body[value.parameter]) !== value.type) {
+      const bodyType = typeof (body[value.parameter]);
+
+      if (bodyType !== value.type) {
         if (typeof (body[value.parameter]) === 'undefined') {
           errorMessage = `${errorMessage}BodyError: Missing non-optional property '${value.parameter}'\n`;
         } else {
