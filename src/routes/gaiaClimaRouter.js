@@ -2,7 +2,7 @@ const http = require('http');
 
 module.exports = {
   getClimate: (intent, place) => {
-    let URL = `${global.URL_SPORT}/${intent}?place=${place}`;
+    const URL = `${global.URL_SPORT}/${intent}?place=${place}`;
     let localData = '';
 
     return new Promise((resolve) => {

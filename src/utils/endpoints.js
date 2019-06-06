@@ -3,54 +3,27 @@ module.exports = {
     const endpoints = [
       {
         type: 'GET',
-        endpoint: '/climate',
+        endpoint: '/',
         parameters: [
           {
-            name: 'climate',
-            type: 'string',
-          },
-          {
-            name: 'sports',
-            type: 'string',
-          },
-          {
-            name: 'allSports',
+            name: 'address',
             type: 'string',
           },
           {
             name: 'place',
             type: 'string',
           },
-        ],
-        description: 'Redirects climate requests to the climate microservice',
-      },
-      {
-        type: 'GET',
-        endpoint: '/local',
-        parameters: [
           {
-            name: 'local',
-            type: 'string',
-          },
-          {
-            name: 'listLocales',
-            type: 'string',
-          },
-          {
-            name: 'address',
+            name: 'intent',
             type: 'string',
           },
         ],
-        description: 'Redirects locale requests to the locale microservice',
+        description: 'Redirects GET requests according to parameters given',
       },
       {
         type: 'POST',
-        endpoint: '/notification',
+        endpoint: '/',
         parameters: [
-          {
-            name: 'createNotification',
-            type: 'string',
-          },
           {
             name: 'telegramId',
             type: 'string',
@@ -61,7 +34,7 @@ module.exports = {
           },
           {
             name: 'days',
-            type: 'array<integer>',
+            type: 'array<string>',
           },
           {
             name: 'hour',
@@ -84,7 +57,7 @@ module.exports = {
             type: 'integer',
           },
         ],
-        description: 'Redirects locale notification to the notification microservice',
+        description: 'Redirects POST requests to Gaia-Esporte createNotification route',
       },
     ];
     return endpoints;
