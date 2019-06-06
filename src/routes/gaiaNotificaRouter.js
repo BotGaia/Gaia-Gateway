@@ -32,4 +32,35 @@ module.exports = {
       resolve(JSON.parse('{"cod": 400}'));
     });
   }),
+  deleteNotification: (telegramId, userChoice) => {
+    const URL = `${global.URL_SPORT}/deleteNotification`;
+    const params = {
+      id: telegramId,
+      number: userChoice,
+    };
+
+    return new Promise((resolve) => {
+      axios.get(URL, { params })
+        .then((response) => {
+          resolve(response.data);
+        }).catch((err) => {
+          resolve(err.response.data);
+        });
+    });
+  },
+  getNotification: (telegramId) => {
+    const URL = `${global.URL_SPORT}/userNotification`;
+    const params = {
+      id: telegramId,
+    };
+
+    return new Promise((resolve) => {
+      axios.get(URL, { params })
+        .then((response) => {
+          resolve(response.data);
+        }).catch((err) => {
+          resolve(err.response.data);
+        });
+    });
+  },
 };
