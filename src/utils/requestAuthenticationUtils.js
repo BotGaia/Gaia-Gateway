@@ -14,7 +14,8 @@ module.exports = {
 
     return errorMessage;
   },
-  postAuthentication: (body) => {
+
+  notificationAuthentication: (body) => {
     let errorMessage = '';
     const parameters = [{ parameter: 'telegramId', type: 'string' },
       { parameter: 'hoursBefore', type: 'number' }, { parameter: 'minutesBefore', type: 'number' },
@@ -27,7 +28,7 @@ module.exports = {
 
       if (bodyType !== value.type) {
         if (typeof (body[value.parameter]) === 'undefined') {
-          errorMessage = `${errorMessage}BodyError: Missing non-optional property '${value.parameter}'\n`;
+          errorMessage = `${errorMessage}BodyError: Missing property '${value.parameter}'\n`;
         } else {
           errorMessage = `${errorMessage}BodyError: '${value.parameter}' should be ${value.type}, but is actually a ${typeof (body[value.parameter])}.\n`;
         }
@@ -50,27 +51,29 @@ module.exports = {
       });
     }
 
-    if (body.class || body.date) {
-      if (!body.class) {
-        errorMessage = `${errorMessage}NotifyError: Missing Notify non-optional parameter 'class'.\n`;
-      }
-
-      if (!body.date) {
-        errorMessage = `${errorMessage}NotifyError: Missing Notify non-optional parameter 'date'.\n`;
-      }
+    if (errorMessage === '') {
+      return false;
     }
 
-    if (body.class) {
-      if (typeof (body.class) !== 'string') {
-        errorMessage = `${errorMessage}ClassError: 'class' should be a String, but is actually a ${typeof (body.class)}.\n`;
-      }
-    }
+    return errorMessage;
+  },
 
-    if (body.date) {
-      if (typeof (body.date) !== 'string') {
-        errorMessage = `${errorMessage}DateError: 'date' should be a String, but is actually a ${typeof (body.date)}.\n`;
+  notifyAuthentication: (body) => {
+    let errorMessage = '';
+    const parameters = [{ parameter: 'class', type: 'string' },
+      { parameter: 'date', type: 'string' }];
+
+    parameters.forEach((value) => {
+      const bodyType = typeof (body[value.parameter]);
+
+      if (bodyType !== value.type) {
+        if (typeof (body[value.parameter]) === 'undefined') {
+          errorMessage = `${errorMessage}BodyError: Missing property '${value.parameter}'\n`;
+        } else {
+          errorMessage = `${errorMessage}BodyError: '${value.parameter}' should be ${value.type}, but is actually a ${typeof (body[value.parameter])}.\n`;
+        }
       }
-    }
+    });
 
     if (errorMessage === '') {
       return false;

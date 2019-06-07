@@ -40,5 +40,6 @@ Aqui se encontra todos os endpoints desse serviço. Todos os endpoints se encont
 
 |Requisição|Endpoint|Parâmetro:Tipo|Descrição|
 |:--------:|:------:|:------------:|:-------:|
-|GET|/|local: String,<br> place: String,<br> intent: String,<br> id: String,<br>number: Number|Redireciona requisições GET para Gaia-Esporte de acordo com os parâmetros|
-|POST|/|telegramId: String,<br> sport: String,<br> days: Array\<String>,<br> hour: Integer,<br> locals: Array\<String>,<br> minutes: Integer,<br> hoursBefore: Integer,<br> minutesBefore: Integer,<br> class: String,<br> date: String|Redireciona requisições POST para as rotas createNotification em Gaia-Esporte ou notify de acordo com os parâmetros|
+|POST|/|telegramId: String,<br> sport: String,<br> days: Array\<String>,<br> hour: Integer,<br> locals: Array\<String>,<br> minutes: Integer,<br> hoursBefore: Integer,<br> minutesBefore: Integer,<br> class: String,<br> date: String|Envia mensagem de acordo com a notificação recebida|
+|GET|/esporte|local: String,<br> place: String,<br> intent: String,<br> id: String,<br>number: Number|Redireciona requisições GET para Gaia-Esporte de acordo com os parâmetros|
+|POST|/esporte|telegramId: String,<br> sport: String,<br> days: Array\<String>,<br> hour: Integer,<br> locals: Array\<String>,<br> minutes: Integer,<br> hoursBefore: Integer,<br> minutesBefore: Integer|Redireciona requisições POST para a rota createNotification em Gaia-Esporte|

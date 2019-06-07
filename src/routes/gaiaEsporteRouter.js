@@ -4,6 +4,38 @@ const notification = require('../utils/notificationTreatmentUtils');
 require('../config/environment');
 
 module.exports = {
+  getClimate: (intent, place) => {
+    const URL = `${global.URL_SPORT}/${intent}`;
+    const params = {
+      place,
+    };
+
+    return new Promise((resolve) => {
+      axios.get(URL, { params })
+        .then((response) => {
+          resolve(response.data);
+        }).catch(() => {
+          resolve(JSON.parse('{"cod": 400}'));
+        });
+    });
+  },
+
+  getLocal: (local) => {
+    const URL = `${global.URL_SPORT}/listLocales`;
+    const params = {
+      local,
+    };
+
+    return new Promise((resolve) => {
+      axios.get(URL, { params })
+        .then((response) => {
+          resolve(response.data);
+        }).catch(() => {
+          resolve(JSON.parse('{"cod": 400}'));
+        });
+    });
+  },
+
   postNotification: json => new Promise((resolve) => {
     const URL = `${global.URL_SPORT}/createNotification`;
     const dataJson = json;
@@ -32,6 +64,7 @@ module.exports = {
       resolve(JSON.parse('{"cod": 400}'));
     });
   }),
+
   deleteNotification: (telegramId, userChoice) => {
     const URL = `${global.URL_SPORT}/deleteNotification`;
     const params = {
@@ -48,6 +81,7 @@ module.exports = {
         });
     });
   },
+
   getNotification: (telegramId) => {
     const URL = `${global.URL_SPORT}/userNotification`;
     const params = {

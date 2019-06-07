@@ -1,7 +1,5 @@
 const express = require('express');
-const local = require('./gaiaLocalRouter');
-const climate = require('./gaiaClimaRouter');
-const notification = require('./gaiaNotificaRouter');
+const esporte = require('./gaiaEsporteRouter');
 const notify = require('./gaiaNotifyRouter');
 const endpoints = require('../utils/endpoints');
 const authentication = require('../utils/requestAuthenticationUtils');
@@ -9,29 +7,33 @@ const authentication = require('../utils/requestAuthenticationUtils');
 const router = express.Router();
 
 router.get('/', (req, res) => {
+  res.json(endpoints.getJson());
+});
+
+router.get('/esporte', (req, res) => {
   const authenticationResponse = authentication.getAuthentication(req.query);
 
   if (!authenticationResponse) {
     if (req.query.local) {
-      local.getLocal(req.query.local).then((localJson) => {
+      esporte.getLocal(req.query.local).then((localJson) => {
         res.json(localJson);
       });
     } else if (req.query.place && req.query.intent === 'climate') {
-      climate.getClimate(req.query.intent, req.query.place).then((climateJson) => {
+      esporte.getClimate(req.query.intent, req.query.place).then((climateJson) => {
         res.json(climateJson);
       });
     } else if (req.query.place && req.query.intent === 'sports') {
-      climate.getClimate(req.query.intent, req.query.place).then((climateJson) => {
+      esporte.getClimate(req.query.intent, req.query.place).then((climateJson) => {
         res.json(climateJson);
       });
     } else if (req.query.id) {
       if (req.query.number) {
-        notification.deleteNotification(req.query.id, req.query.number)
+        esporte.deleteNotification(req.query.id, req.query.number)
           .then((notificationResponse) => {
             res.json(notificationResponse);
           });
       } else {
-        notification.getNotification(req.query.id).then((notifications) => {
+        esporte.getNotification(req.query.id).then((notifications) => {
           res.json(notifications);
         });
       }
@@ -43,23 +45,28 @@ router.get('/', (req, res) => {
   }
 });
 
-router.post('/', (req, res) => {
-  const authenticationResponse = authentication.postAuthentication(req.body);
+router.post('/esporte', (req, res) => {
+  const authenticationResponse = authentication.notificationAuthentication(req.body);
 
   if (!authenticationResponse) {
-    if (req.body.date) {
-      notify.sendNotification(req.body).then((response) => {
-        res.json(response);
-      });
-    } else if (req.body.hoursBefore) {
-      notification.postNotification(req.body).then((response) => {
-        res.json(response);
-      });
-    } else {
-      res.json(endpoints.getJson());
-    }
+    esporte.postNotification(req.body).then((response) => {
+      res.json(response);
+    });
   } else {
     res.end(authenticationResponse);
+  }
+});
+
+router.post('/', (req, res) => {
+  const notifyAuthenticationResponse = authentication.notifyAuthentication(req.body);
+  const notificationAuthenticationResponse = authentication.notificationAuthentication(req.body);
+
+  if (!(notifyAuthenticationResponse || notificationAuthenticationResponse)) {
+    notify.sendNotification(req.body).then((response) => {
+      res.json(response);
+    });
+  } else {
+    res.end(`${notificationAuthenticationResponse}${notifyAuthenticationResponse}`);
   }
 });
 
