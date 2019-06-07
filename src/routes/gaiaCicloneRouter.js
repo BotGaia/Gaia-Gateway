@@ -6,9 +6,8 @@ module.exports = {
   getCycloneAlert: (id) => {
     const URL = `${global.URL_CYCLONE}/userCycloneAlert`;
     const params = {
-      id ,
+      id,
     };
-console.log(params);
     return new Promise((resolve) => {
       axios.get(URL, { params })
         .then((res) => {
@@ -40,8 +39,8 @@ console.log(params);
 
     axios.post(URL, dataJson).then((res) => {
       resolve(res.data);
-    }).catch(() => {
-      resolve(JSON.parse('{"cod": 400}'));
+    }).catch((err) => {
+      resolve(err);
     });
   }),
 };

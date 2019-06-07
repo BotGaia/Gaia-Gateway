@@ -50,17 +50,16 @@ router.get('/ciclone', (req, res) => {
   const authenticationResponse = authentication.getAuthentication(req.query);
 
   if (!authenticationResponse) {
-   
-      if (req.query.id && req.query.intent === 'delete') {
-        ciclone.deleteCycloneAlert(req.query.id).then((cycloneAlert) => {
-          res.json(cycloneAlert);
-        });
-      } else if (req.query.id && req.query.intent === 'show') { 
-        ciclone.getCycloneAlert(req.query.id).then((cycloneAlert) => {
-          res.json(cycloneAlert);
-        });
-      }
+    if (req.query.id && req.query.intent === 'delete') {
+      ciclone.deleteCycloneAlert(req.query.id).then((cycloneAlert) => {
+        res.json(cycloneAlert);
+      });
+    } else if (req.query.id && req.query.intent === 'show') {
+      ciclone.getCycloneAlert(req.query.id).then((cycloneAlert) => {
+        res.json(cycloneAlert);
+      });
     }
+  }
 });
 
 router.post('/esporte', (req, res) => {

@@ -81,23 +81,24 @@ module.exports = {
 
     return errorMessage;
   },
-  cycloneAuthentication: () => {
+  cycloneAuthentication: (body) => {
     let errorMessage = '';
-    const parameters = { parameter: 'telegramId', type: 'string' };
+    const params = { telegramId: 'telegramId', type: 'string' };
 
-    parameters.forEach((value) => {
-      const bodyType = typeof (body[value.parameter]);
+    const bodyType = typeof (body.telegramId);
 
-      if (bodyType !== value.type) {
-        if (typeof (body[value.parameter]) === 'undefined') {
-          errorMessage = `${errorMessage}BodyError: Missing property '${value.parameter}'\n`;
-        } else {
-          errorMessage = `${errorMessage}BodyError: '${value.parameter}' should be ${value.type}, but is actually a ${typeof (body[value.parameter])}.\n`;
-        }
+    if (bodyType !== params.type) {
+      if (typeof (params.id) === 'undefined') {
+        errorMessage = `${errorMessage}BodyError: Missing property '${params.telegramId}'\n`;
+      } else {
+        errorMessage = `${errorMessage}BodyError: '${params.telegramId}' should be ${params.type}, but is actually a ${typeof (bodyType)}.\n`;
       }
-    });
+    }
 
+    if (errorMessage === '') {
+      return false;
+    }
 
-
-  }
+    return errorMessage;
+  },
 };
