@@ -9,6 +9,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 environment.configSport();
+environment.configCyclone();
 
 require('./routes/router')(app);
 
