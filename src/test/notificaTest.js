@@ -4,7 +4,7 @@
 const chai = require('chai');
 const app = require('../index');
 const routes = require('../routes/router')(app);
-const notification = require('../routes/gaiaNotificaRouter');
+const esporte = require('../routes/gaiaEsporteRouter');
 const notify = require('../routes/gaiaNotifyRouter');
 
 const should = chai.should();
@@ -18,7 +18,7 @@ const mockUser = {
 };
 
 describe('/POST registerUser', () => {
-  it('Register User', () => {
+  it('should register User', () => {
     mockUser.should.be.a('object');
     mockUser.telegramId.should.eql('testId2');
     mockUser.sport.should.eql('');

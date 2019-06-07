@@ -3,7 +3,7 @@
 /* eslint-disable no-undef */
 
 const chai = require('chai');
-const local = require('../routes/gaiaLocalRouter');
+const esporte = require('../routes/gaiaEsporteRouter');
 
 const should = chai.should();
 
