@@ -3,8 +3,8 @@ module.exports = {
     let errorMessage = '';
 
     if (query.intent) {
-      if ((query.intent !== 'sports') && (query.intent !== 'climate')) {
-        errorMessage = `${errorMessage}IntentError: Expected Intent to be equal to 'sports' or 'climate', but instead got '${query.intent}'.\n`;
+      if ((query.intent !== 'sports') && (query.intent !== 'climate') && (query.intent !== 'delete') && (query.intent !== 'show')) {
+        errorMessage = `${errorMessage}IntentError: Expected Intent to be equal to 'sports' or 'climate' or 'delete' or 'show', but instead got '${query.intent}'.\n`;
       }
     }
 
@@ -81,4 +81,23 @@ module.exports = {
 
     return errorMessage;
   },
+  cycloneAuthentication: () => {
+    let errorMessage = '';
+    const parameters = { parameter: 'telegramId', type: 'string' };
+
+    parameters.forEach((value) => {
+      const bodyType = typeof (body[value.parameter]);
+
+      if (bodyType !== value.type) {
+        if (typeof (body[value.parameter]) === 'undefined') {
+          errorMessage = `${errorMessage}BodyError: Missing property '${value.parameter}'\n`;
+        } else {
+          errorMessage = `${errorMessage}BodyError: '${value.parameter}' should be ${value.type}, but is actually a ${typeof (body[value.parameter])}.\n`;
+        }
+      }
+    });
+
+
+
+  }
 };
