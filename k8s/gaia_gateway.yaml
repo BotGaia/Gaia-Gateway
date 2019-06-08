@@ -27,6 +27,8 @@ spec:
       - env:
         - name: ENVIRONMENT
           value: production
+        - name: TELEGRAM_TOKEN
+          value: {{TELEGRAM_TOKEN}}
         image: caleberios/gaia-gateway:homolog
         imagePullPolicy: Always
         name: gaia-gateway
