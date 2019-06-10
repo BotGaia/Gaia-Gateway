@@ -24,15 +24,15 @@ Após instalar o docker rode o projeto como desenvolvimento da seguinte maneira:
 
 Após o build, rode esse outro comando:
 
-```$ sudo docker run --rm -it -p 3002:3002 -v $PWD:/app -v /app/node_modules gaiagateway```
+```$ sudo docker run --env-file .env --rm -it -p 3002:3002 -v $PWD:/app -v /app/node_modules gaiagateway```
 
 Para rodar os testes, utilize:
 
-``` $ sudo docker run --rm -v $PWD:/app -v /app/node_modules gaiagateway npm run test ```
+``` $ sudo docker run --env-file .env --rm -v $PWD:/app -v /app/node_modules gaiagateway npm run test ```
 
 Para rodar a folha de estilo, utilize este comando:
 
-``` $ sudo docker run --rm -v $PWD:/app -v /app/node_modules gaiagateway npm run lint ```
+``` $ sudo docker run --env-file .env --rm -v $PWD:/app -v /app/node_modules gaiagateway npm run lint ```
 
 ### Endpoints
 
@@ -40,7 +40,6 @@ Aqui se encontra todos os endpoints desse serviço. Todos os endpoints se encont
 
 |Requisição|Endpoint|Parâmetro:Tipo|Descrição|
 |:--------:|:------:|:------------:|:-------:|
-|GET|/|-|Retorna todas as endpoints do microserviço.|
-|GET|/climate|climate: String,<br> sports: String,<br> allSports: String,<br> place: String|Redireciona as requisições de clima para o microsserviço de clima.|
-|GET|/local|local: String,<br> listLocales: String,<br> address: String|Redireciona as requisições de local para o microsserviço de local.|
-|POST|/notification|createNotification: String,<br> telegramId: String,<br> sport: String,<br> days: Array<Integer>,<br> hour: Integer,<br> locals: Array<String>,<br> minutes: Integer,<br> hoursBefore: Integer,<br> minutesBefore: Integer |Redireciona as requisições de notificação para o microsserviço de notificação.|
+|POST|/|telegramId: String,<br> sport: String,<br> days: Array\<String>,<br> hour: Integer,<br> locals: Array\<String>,<br> minutes: Integer,<br> hoursBefore: Integer,<br> minutesBefore: Integer,<br> class: String,<br> date: String|Envia mensagem de acordo com a notificação recebida|
+|GET|/esporte|local: String,<br> place: String,<br> intent: String,<br> id: String,<br>number: Number|Redireciona requisições GET para Gaia-Esporte de acordo com os parâmetros|
+|POST|/esporte|telegramId: String,<br> sport: String,<br> days: Array\<String>,<br> hour: Integer,<br> locals: Array\<String>,<br> minutes: Integer,<br> hoursBefore: Integer,<br> minutesBefore: Integer|Redireciona requisições POST para a rota createNotification em Gaia-Esporte|

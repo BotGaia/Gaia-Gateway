@@ -66,7 +66,7 @@ deployHomolog:
     - gcloud auth activate-service-account --key-file ${SERVICE_ACCOUNT} --project=${GKE_PROJECT}
     - gcloud container clusters get-credentials gaia-cluster --zone us-central1-a --project gaia-240100
     - kubectl delete deployment.apps/gaia-gateway-hml service/gaia-gateway-hml
-    - kubectl apply -f k8s/gaia_gateway_hml.yaml
+    - cat k8s/gaia_gateway_hml.yaml | sed "s/{{TELEGRAM_TOKEN_HML}}/$TELEGRAM_TOKEN_HML/g" | kubectl apply -f -
 
 deployProd:
   stage: deploy
@@ -78,4 +78,4 @@ deployProd:
     - gcloud auth activate-service-account --key-file ${SERVICE_ACCOUNT} --project=${GKE_PROJECT}
     - gcloud container clusters get-credentials gaia-cluster --zone us-central1-a --project gaia-240100
     - kubectl delete deployment.apps/gaia-gateway service/gaia-gateway
-    - kubectl apply -f k8s/gaia_gateway.yaml
+    - cat k8s/gaia_gateway.yaml | sed "s/{{TELEGRAM_TOKEN}}/$TELEGRAM_TOKEN/g" | kubectl apply -f -
