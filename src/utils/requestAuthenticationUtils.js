@@ -23,13 +23,13 @@ module.exports = {
       { parameter: 'sport' }, { parameter: 'locals' }];
 
     parameters.forEach((value) => {
-      const bodyType = typeof (body[value.parameter]);
+      const bodyType = typeof (body[value]);
 
       if (bodyType !== 'string') {
-        if (typeof (body[value.parameter]) === 'undefined') {
-          errorMessage = `${errorMessage}BodyError: Missing property '${value.parameter}'\n`;
+        if (typeof (body[value]) === 'undefined') {
+          errorMessage = `${errorMessage}BodyError: Missing property '${value}'\n`;
         } else {
-          errorMessage = `${errorMessage}BodyError: '${value.parameter}' should be String, but is actually a ${typeof (body[value.parameter])}.\n`;
+          errorMessage = `${errorMessage}BodyError: '${value}' should be String, but is actually a ${typeof (body[value])}.\n`;
         }
       }
     });
