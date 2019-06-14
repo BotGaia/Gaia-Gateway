@@ -20,8 +20,7 @@ module.exports = {
     const parameters = [{ parameter: 'telegramId', type: 'string' },
       { parameter: 'hoursBefore', type: 'number' }, { parameter: 'minutesBefore', type: 'number' },
       { parameter: 'hour', type: 'number' }, { parameter: 'minutes', type: 'number' },
-      { parameter: 'sport', type: 'string' }, { parameter: 'days', type: 'object' },
-      { parameter: 'locals', type: 'object' }];
+      { parameter: 'sport', type: 'string' }];
 
     parameters.forEach((value) => {
       const bodyType = typeof (body[value.parameter]);
@@ -35,10 +34,26 @@ module.exports = {
       }
     });
 
+    if (typeof (body.days) !== 'object' && typeof (body.days) !== 'string') {
+      if (typeof (body.days) === 'undefined') {
+        errorMessage = `${errorMessage}BodyError: Missing property 'days'\n`;
+      } else {
+        errorMessage = `${errorMessage}BodyError: 'days' should be Object or String, but is actually a ${typeof (body.days)}.\n`;
+      }
+    }
+
+    if (typeof (body.locals) !== 'object' && typeof (body.locals) !== 'string') {
+      if (typeof (body.locals) === 'undefined') {
+        errorMessage = `${errorMessage}BodyError: Missing property 'locals'\n`;
+      } else {
+        errorMessage = `${errorMessage}BodyError: 'locals' should be Object or String, but is actually a ${typeof (body.locals)}.\n`;
+      }
+    }
+
     if (typeof (body.days) === 'object') {
       body.days.forEach((day) => {
-        if ((typeof (day) !== 'number') && (typeof (day) !== 'string')) {
-          errorMessage = `${errorMessage}DaysError: 'days' should contain Numbers or Strings, but instead contains ${typeof (day)}.\n`;
+        if ((typeof (day) !== 'string')) {
+          errorMessage = `${errorMessage}DaysError: 'days' should contain Strings, but instead contains ${typeof (day)}.\n`;
         }
       });
     }
