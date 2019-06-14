@@ -17,36 +17,34 @@ module.exports = {
 
   notificationAuthentication: (body) => {
     let errorMessage = '';
-    const parameters = [{ parameter: 'telegramId', type: 'string' },
-      { parameter: 'hoursBefore', type: 'number' }, { parameter: 'minutesBefore', type: 'number' },
-      { parameter: 'hour', type: 'number' }, { parameter: 'minutes', type: 'number' },
-      { parameter: 'sport', type: 'string' }, { parameter: 'days', type: 'object' },
-      { parameter: 'locals', type: 'object' }];
+    const parameters = ['telegramId',
+      'hoursBefore', 'minutesBefore',
+      'hour', 'minutes', 'sport', 'locals'];
 
     parameters.forEach((value) => {
-      const bodyType = typeof (body[value.parameter]);
+      const bodyType = typeof (body[value]);
 
-      if (bodyType !== value.type) {
-        if (typeof (body[value.parameter]) === 'undefined') {
-          errorMessage = `${errorMessage}BodyError: Missing property '${value.parameter}'\n`;
+      if (bodyType !== 'string') {
+        if (typeof (body[value]) === 'undefined') {
+          errorMessage = `${errorMessage}BodyError: Missing property '${value}'\n`;
         } else {
-          errorMessage = `${errorMessage}BodyError: '${value.parameter}' should be ${value.type}, but is actually a ${typeof (body[value.parameter])}.\n`;
+          errorMessage = `${errorMessage}BodyError: '${value}' should be String, but is actually a ${typeof (body[value])}.\n`;
         }
       }
     });
 
-    if (typeof (body.days) === 'object') {
-      body.days.forEach((day) => {
-        if ((typeof (day) !== 'number') && (typeof (day) !== 'string')) {
-          errorMessage = `${errorMessage}DaysError: 'days' should contain Numbers or Strings, but instead contains ${typeof (day)}.\n`;
-        }
-      });
+    if (typeof (body.days) !== 'object' && typeof (body.days) !== 'string') {
+      if (typeof (body.days) === 'undefined') {
+        errorMessage = `${errorMessage}BodyError: Missing property 'days'\n`;
+      } else {
+        errorMessage = `${errorMessage}BodyError: 'days' should be Object or String, but is actually a ${typeof (body.days)}.\n`;
+      }
     }
 
-    if (typeof (body.locals) === 'object') {
-      body.locals.forEach((local) => {
-        if (typeof (local) !== 'string') {
-          errorMessage = `${errorMessage}LocalsError: 'locals' should contain Strings, but instead contains ${typeof (local)}.\n`;
+    if (typeof (body.days) === 'object') {
+      body.days.forEach((day) => {
+        if ((typeof (day) !== 'string')) {
+          errorMessage = `${errorMessage}DaysError: 'days' should contain Strings, but instead contains ${typeof (day)}.\n`;
         }
       });
     }
