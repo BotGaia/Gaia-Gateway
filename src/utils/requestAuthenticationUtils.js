@@ -18,9 +18,9 @@ module.exports = {
   notificationAuthentication: (body) => {
     let errorMessage = '';
     const parameters = [{ parameter: 'telegramId', type: 'string' },
-      { parameter: 'hoursBefore', type: 'number' }, { parameter: 'minutesBefore', type: 'number' },
-      { parameter: 'hour', type: 'number' }, { parameter: 'minutes', type: 'number' },
-      { parameter: 'sport', type: 'string' }];
+      { parameter: 'hoursBefore', type: 'string' }, { parameter: 'minutesBefore', type: 'string' },
+      { parameter: 'hour', type: 'string' }, { parameter: 'minutes', type: 'string' },
+      { parameter: 'sport', type: 'string' }, { parameter: 'locals', type: 'string' }];
 
     parameters.forEach((value) => {
       const bodyType = typeof (body[value.parameter]);
@@ -42,26 +42,10 @@ module.exports = {
       }
     }
 
-    if (typeof (body.locals) !== 'object' && typeof (body.locals) !== 'string') {
-      if (typeof (body.locals) === 'undefined') {
-        errorMessage = `${errorMessage}BodyError: Missing property 'locals'\n`;
-      } else {
-        errorMessage = `${errorMessage}BodyError: 'locals' should be Object or String, but is actually a ${typeof (body.locals)}.\n`;
-      }
-    }
-
     if (typeof (body.days) === 'object') {
       body.days.forEach((day) => {
         if ((typeof (day) !== 'string')) {
           errorMessage = `${errorMessage}DaysError: 'days' should contain Strings, but instead contains ${typeof (day)}.\n`;
-        }
-      });
-    }
-
-    if (typeof (body.locals) === 'object') {
-      body.locals.forEach((local) => {
-        if (typeof (local) !== 'string') {
-          errorMessage = `${errorMessage}LocalsError: 'locals' should contain Strings, but instead contains ${typeof (local)}.\n`;
         }
       });
     }

@@ -64,7 +64,6 @@ router.get('/ciclone', (req, res) => {
 
 router.post('/esporte', (req, res) => {
   const authenticationResponse = authentication.notificationAuthentication(req.body);
-
   if (!authenticationResponse) {
     esporte.postNotification(req.body).then((response) => {
       res.json(response);
