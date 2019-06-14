@@ -17,10 +17,9 @@ module.exports = {
 
   notificationAuthentication: (body) => {
     let errorMessage = '';
-    const parameters = [{ parameter: 'telegramId' },
-      { parameter: 'hoursBefore' }, { parameter: 'minutesBefore' },
-      { parameter: 'hour' }, { parameter: 'minutes' },
-      { parameter: 'sport' }, { parameter: 'locals' }];
+    const parameters = ['telegramId',
+      'hoursBefore', 'minutesBefore',
+      'hour', 'minutes', 'sport', 'locals'];
 
     parameters.forEach((value) => {
       const bodyType = typeof (body[value]);
