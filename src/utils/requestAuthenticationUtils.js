@@ -60,20 +60,39 @@ module.exports = {
 
   notifyAuthentication: (body) => {
     let errorMessage = '';
-    const parameters = [{ parameter: 'class', type: 'string' },
-      { parameter: 'date', type: 'string' }];
 
-    parameters.forEach((value) => {
-      const bodyType = typeof (body[value.parameter]);
+    if (body.cyclones || body.users) {
+      console.log("checkingshit")
+      const parameters = [{parameter: 'cyclones', type: 'object'},
+        {parameter: 'users', type: 'object'}];
 
-      if (bodyType !== value.type) {
-        if (typeof (body[value.parameter]) === 'undefined') {
-          errorMessage = `${errorMessage}BodyError: Missing property '${value.parameter}'\n`;
-        } else {
-          errorMessage = `${errorMessage}BodyError: '${value.parameter}' should be ${value.type}, but is actually a ${typeof (body[value.parameter])}.\n`;
+      parameters.forEach((value) => {
+        const bodyType = typeof (body[value.parameter]);
+
+        if (bodyType !== value.type) {
+          if (typeof (body[value.parameter]) === 'undefined') {
+            errorMessage = `${errorMessage}CycloneNotificationError: Missing property '${value.parameter}'\n`;
+          } else {
+            errorMessage = `${errorMessage}CycloneNotificationError: '${value.parameter}' should be ${value.type}, but is actually a ${typeof (body[value.parameter])}.\n`;
+          }
         }
-      }
-    });
+      });
+    } else {
+      const parameters = [{ parameter: 'class', type: 'string' },
+        { parameter: 'date', type: 'string' }];
+
+      parameters.forEach((value) => {
+        const bodyType = typeof (body[value.parameter]);
+
+        if (bodyType !== value.type) {
+          if (typeof (body[value.parameter]) === 'undefined') {
+            errorMessage = `${errorMessage}BodyError: Missing property '${value.parameter}'\n`;
+          } else {
+            errorMessage = `${errorMessage}BodyError: '${value.parameter}' should be ${value.type}, but is actually a ${typeof (body[value.parameter])}.\n`;
+          }
+        }
+      });
+    }
 
     if (errorMessage === '') {
       return false;
@@ -81,6 +100,7 @@ module.exports = {
 
     return errorMessage;
   },
+
   cycloneAuthentication: (body) => {
     let errorMessage = '';
     const params = { telegramId: 'telegramId', type: 'string' };
