@@ -63,7 +63,7 @@ function setCycloneMessage(target) {
   return `Nome: ${cyclone.name}\nBacia de Origem: ${cyclone.originBasin}
 Bacia Atual: ${cyclone.currentBasin}\nData de início: ${cyclone.startDate}
 Data de fim: ${cyclone.endDate}\nTipo de tempestade: ${cyclone.stormType}
-Velocidade dos ventos: ${cyclone.windSpeed} m/s`;
+Velocidade dos ventos: ${cyclone.windSpeed} m/s\n\n`;
 }
 
 module.exports = {
