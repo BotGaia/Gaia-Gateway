@@ -49,25 +49,52 @@ function setClimateMessages(messages, conditions) {
   messages.push(`e apresento ${conditions.weather.sky}.`);
 }
 
+function setCycloneMessage(cyclone) {
+  const cycloneAttributes = ['name', 'originBasin', 'currentBasin', 'startDate',
+  'endDate', 'stormType', 'windSpeed'];
+
+  cycloneAttributes.forEach((attribute) => {
+    if (!cyclone[attribute]) {
+      cyclone[attribute] = 'Indeterminado';
+    }
+  });
+
+  return `Nome: ${cyclone.name}\nBacia de Origem: ${cyclone.originBasin}\nBacia Atual:/
+   ${cyclone.currentBasin}\nData de início: ${cyclone.startDate}\nData de fim: ${cyclone.endDate}/
+   \nTipo de tempestade: ${cyclone.stormType}\nVelocidade dos ventos: ${cyclone.windSpeed} m/s`;
+}
+
 module.exports = {
   sendNotification: notification => new Promise((resolve) => {
-    let messages = [];
-    const postURL = `${global.URL_SPORT}/sportForecast`;
-
-    axios.post(postURL, notification).then(async (res) => {
-      for (const index in res.data) {
-        if (res.data) {
-          await sendMessage(recommendSport(res.data[index], notification, index), notification);
-          await setClimateMessages(messages, res.data[index]);
-          for (const messageIndex in messages) {
-            if (messages) {
-              await sendMessage(messages[messageIndex], notification);
-            }
-          }
-          messages = [];
+    if (notification.users && notification.cyclones) {
+      notification.users.forEach((user) => {
+        if (notification.cyclones[0]) {
+          sendMessage("Notificações de Ciclones:", user);
         }
-      }
-      resolve(res.data);
-    });
+
+        notification.cyclones.forEach((cyclone) => {
+          sendMessage(setCycloneMessage(cyclone), user);
+        });
+      });
+    } else {
+      let messages = [];
+      const postURL = `${global.URL_SPORT}/sportForecast`;
+
+      axios.post(postURL, notification).then(async (res) => {
+        for (const index in res.data) {
+          if (res.data) {
+            await sendMessage(recommendSport(res.data[index], notification, index), notification);
+            await setClimateMessages(messages, res.data[index]);
+            for (const messageIndex in messages) {
+              if (messages) {
+                await sendMessage(messages[messageIndex], notification);
+              }
+            }
+            messages = [];
+          }
+        }
+        resolve(res.data);
+      });
+    }
   }),
 };
