@@ -17,19 +17,19 @@ module.exports = {
 
   notificationAuthentication: (body) => {
     let errorMessage = '';
-    const parameters = [{ parameter: 'telegramId', type: 'string' },
-      { parameter: 'hoursBefore', type: 'string' }, { parameter: 'minutesBefore', type: 'string' },
-      { parameter: 'hour', type: 'string' }, { parameter: 'minutes', type: 'string' },
-      { parameter: 'sport', type: 'string' }, { parameter: 'locals', type: 'string' }];
+    const parameters = [{ parameter: 'telegramId' },
+      { parameter: 'hoursBefore' }, { parameter: 'minutesBefore' },
+      { parameter: 'hour' }, { parameter: 'minutes' },
+      { parameter: 'sport' }, { parameter: 'locals' }];
 
     parameters.forEach((value) => {
       const bodyType = typeof (body[value.parameter]);
 
-      if (bodyType !== value.type) {
+      if (bodyType !== 'string') {
         if (typeof (body[value.parameter]) === 'undefined') {
           errorMessage = `${errorMessage}BodyError: Missing property '${value.parameter}'\n`;
         } else {
-          errorMessage = `${errorMessage}BodyError: '${value.parameter}' should be ${value.type}, but is actually a ${typeof (body[value.parameter])}.\n`;
+          errorMessage = `${errorMessage}BodyError: '${value.parameter}' should be String, but is actually a ${typeof (body[value.parameter])}.\n`;
         }
       }
     });
