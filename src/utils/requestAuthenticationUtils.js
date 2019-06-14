@@ -62,9 +62,8 @@ module.exports = {
     let errorMessage = '';
 
     if (body.cyclones || body.users) {
-      console.log("checkingshit")
-      const parameters = [{parameter: 'cyclones', type: 'object'},
-        {parameter: 'users', type: 'object'}];
+      const parameters = [{ parameter: 'cyclones', type: 'object' },
+        { parameter: 'users', type: 'object' }];
 
       parameters.forEach((value) => {
         const bodyType = typeof (body[value.parameter]);

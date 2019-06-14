@@ -49,9 +49,10 @@ function setClimateMessages(messages, conditions) {
   messages.push(`e apresento ${conditions.weather.sky}.`);
 }
 
-function setCycloneMessage(cyclone) {
+function setCycloneMessage(target) {
+  const cyclone = target;
   const cycloneAttributes = ['name', 'originBasin', 'currentBasin', 'startDate',
-  'endDate', 'stormType', 'windSpeed'];
+    'endDate', 'stormType', 'windSpeed'];
 
   cycloneAttributes.forEach((attribute) => {
     if (!cyclone[attribute]) {
@@ -59,17 +60,18 @@ function setCycloneMessage(cyclone) {
     }
   });
 
-  return `Nome: ${cyclone.name}\nBacia de Origem: ${cyclone.originBasin}\nBacia Atual:/
-   ${cyclone.currentBasin}\nData de início: ${cyclone.startDate}\nData de fim: ${cyclone.endDate}/
-   \nTipo de tempestade: ${cyclone.stormType}\nVelocidade dos ventos: ${cyclone.windSpeed} m/s`;
+  return `Nome: ${cyclone.name}\nBacia de Origem: ${cyclone.originBasin}
+Bacia Atual: ${cyclone.currentBasin}\nData de início: ${cyclone.startDate}
+Data de fim: ${cyclone.endDate}\nTipo de tempestade: ${cyclone.stormType}
+Velocidade dos ventos: ${cyclone.windSpeed} m/s`;
 }
 
 module.exports = {
   sendNotification: notification => new Promise((resolve) => {
     if (notification.users && notification.cyclones) {
-      notification.users.forEach((user) => {
+      notification.users.forEach(async (user) => {
         if (notification.cyclones[0]) {
-          sendMessage("Notificações de Ciclones:", user);
+          await sendMessage('Notificações de Ciclones:', user);
         }
 
         notification.cyclones.forEach((cyclone) => {
