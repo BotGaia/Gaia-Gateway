@@ -59,6 +59,10 @@ router.get('/ciclone', (req, res) => {
         res.json(cycloneAlert);
       });
     }
+  } else if (req.query.intent === 'allCyclones') {
+    ciclone.getAllCyclones().then((cyclones) => {
+      res.json(cyclones);
+    });
   }
 });
 
