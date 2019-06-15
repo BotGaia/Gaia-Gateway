@@ -43,4 +43,16 @@ module.exports = {
       resolve(err);
     });
   }),
+
+  getAllCyclones: () => {
+    const URL = `${global.URL_CYCLONE}/allCyclones`;
+    return new Promise((resolve) => {
+      axios.get(URL)
+        .then((res) => {
+          resolve(res.data);
+        }).catch((err) => {
+          resolve(err);
+        });
+    });
+  },
 };
