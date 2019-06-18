@@ -59,12 +59,15 @@ router.get('/ciclone', (req, res) => {
         res.json(cycloneAlert);
       });
     }
+  } else if (req.query.intent === 'allCyclones') {
+    ciclone.getAllCyclones().then((cyclones) => {
+      res.json(cyclones);
+    });
   }
 });
 
 router.post('/esporte', (req, res) => {
   const authenticationResponse = authentication.notificationAuthentication(req.body);
-
   if (!authenticationResponse) {
     esporte.postNotification(req.body).then((response) => {
       res.json(response);
@@ -89,8 +92,8 @@ router.post('/ciclone', (req, res) => {
 router.post('/', (req, res) => {
   const notifyAuthenticationResponse = authentication.notifyAuthentication(req.body);
   const notificationAuthenticationResponse = authentication.notificationAuthentication(req.body);
-
-  if (!(notifyAuthenticationResponse || notificationAuthenticationResponse)) {
+  if ((!(notifyAuthenticationResponse || notificationAuthenticationResponse))
+    || (!notifyAuthenticationResponse && req.body.cyclones)) {
     notify.sendNotification(req.body).then((response) => {
       res.json(response);
     });
