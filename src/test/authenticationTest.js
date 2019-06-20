@@ -78,3 +78,68 @@ describe('Cyclone Alert authentication', () => {
         done();
     });
 });
+
+describe('Notify authentication', () => {
+    it('should not redirect cyclone notify request', (done) => {
+        const notification = {
+            users: [
+                {
+                    telegramId: "12254862",
+                    class: "cycloneAlert"
+                }
+            ]
+        };
+        const errorMessage = auth.notifyAuthentication(notification);
+        
+        errorMessage.should.be.a('String');
+        done();
+    });
+
+    it('should redirect cyclone notify request', (done) => {
+        const notification = {
+            cyclones: [
+                {
+                    name: "Fast boy",
+                    originBasin: "Every",
+                    currentBasin: "Where",
+                    startDate: "00/00/0000",
+                    endDate: "31/12/9999",
+                    stormType: "Sonic Boom",
+                    windSpeed: "9001",
+                    class: "cyclone"
+                }
+            ],
+            users: [
+                {
+                    telegramId: "12254862",
+                    class: "cycloneAlert"
+                }
+            ]
+        };
+        const errorMessage = auth.notifyAuthentication(notification);
+
+        errorMessage.should.be.false;
+        done();
+    });
+
+    it('should not redirect notification notify request', (done) => {
+        const notification = {
+            class: 333,
+        };
+        const errorMessage = auth.notifyAuthentication(notification);
+        
+        errorMessage.should.be.a('String');
+        done();
+    });
+
+    it('should redirect notification notify request', (done) => {
+        const notification = {
+            class: "notification",
+            date: "12/12/12",
+        };
+        const errorMessage = auth.notifyAuthentication(notification);
+
+        errorMessage.should.be.false;
+        done();
+    });
+});
