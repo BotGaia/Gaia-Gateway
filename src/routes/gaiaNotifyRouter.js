@@ -69,15 +69,20 @@ Velocidade dos ventos: ${cyclone.windSpeed} m/s\n\n`;
 module.exports = {
   sendNotification: notification => new Promise((resolve) => {
     if (notification.users && notification.cyclones) {
-      notification.users.forEach(async (user) => {
-        if (notification.cyclones[0]) {
-          await sendMessage('Notificações de Ciclones:', user);
-        }
+      try {
+        notification.users.forEach(async (user) => {
+          if (notification.cyclones[0]) {
+            await sendMessage('Notificações de Ciclones:', user);
+          }
 
-        notification.cyclones.forEach((cyclone) => {
-          sendMessage(setCycloneMessage(cyclone), user);
+          notification.cyclones.forEach((cyclone) => {
+            sendMessage(setCycloneMessage(cyclone), user);
+          });
         });
-      });
+        resolve({ok: true});
+      } catch(err) {
+        resolve(err);
+      }
     } else {
       let messages = [];
       const postURL = `${global.URL_SPORT}/sportForecast`;
