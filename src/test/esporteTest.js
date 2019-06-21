@@ -165,7 +165,45 @@ describe('Esporte', () => {
       });
     });
 
-    it('should get a notification');
+    it('should get a notification', (done) => {
+      const params = {
+        id: '553888617',
+      };
+      const getResponse = {
+          data: [
+            {
+              "days": [
+                1
+              ],
+              "locals": [
+                "rio de janeiro"
+              ],
+              "_id": "5d0cfba647458b001d8dc971",
+              "class": "notification",
+              "telegramId": "553888617",
+              "sport": "kitesurf",
+              "hour": 12,
+              "minutes": 12,
+              "hoursBefore": 10,
+              "minutesBefore": 0,
+              "date": "2019-06-21T12:45:42.477Z",
+              "__v": 0
+            }
+          ]
+      };
+      
+      getStub.withArgs(`${global.URL_SPORT}/userNotification`, { params })
+          .resolves(getResponse);
+
+      esporte.getNotification('553888617').then((res) => {
+          res.should.be.a('Array');
+          res[0].should.have.property('days');
+          res[0].should.have.property('locals');
+          res[0].should.have.property('class').eql('notification');
+          res[0].should.have.property('date').eql('2019-06-21T12:45:42.477Z');
+          done();
+      });
+    });
     
     it('should delete a notification', (done) => {
       const params = {
@@ -196,7 +234,7 @@ describe('Esporte', () => {
     });
 
     it('should not get a locations list', (done) => {
-      esporte.getClimate('shameonyou', 'brasilia').then((res) => {
+      esporte.getLocal('brasilia').then((res) => {
         res.should.be.a('Object');
         res.should.have.property('cod').eql(400);
         done();
@@ -231,5 +269,10 @@ describe('Esporte', () => {
       });
     });
 
-    it('should not get a notification');
+    it('should not get a notification', (done) => {
+      esporte.getNotification('553888617').then((res) => {
+        res.should.be.a('String').that.equal('ECONNREFUSED');
+        done();
+      });
+    });
 });
