@@ -68,7 +68,7 @@ Velocidade dos ventos: ${cyclone.windSpeed} m/s\n\n`;
 module.exports = {
   sendNotification: notification => new Promise((resolve) => {
     const usefulNotification = notification;
-    sefulNotification.date = new Date(notification.date);
+    usefulNotification.date = new Date(notification.date);
     if (notification.users && notification.cyclones) {
       notification.users.forEach(async (user) => {
         if (notification.cyclones[0]) {
