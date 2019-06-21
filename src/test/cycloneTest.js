@@ -52,6 +52,30 @@ describe('Ciclone', () => {
         });
     });
 
+    it('should delete a cyclone alert', (done) => {
+        const params = {
+            id: 553888617,
+        }
+
+        getStub.withArgs(`${global.URL_CYCLONE}/deleteCycloneAlert`, { params })
+          .resolves({data: 'Alerta de ciclone excluído'});
+
+        ciclone.deleteCycloneAlert(553888617).then((res) => {
+            res.should.be.a('String').that.is.equal('Alerta de ciclone excluído');
+            done();
+        });
+    });
+
+    it('should get all cyclones', (done) => {
+        getStub.withArgs(`${global.URL_CYCLONE}/allCyclones`)
+          .resolves({data: []});
+
+        ciclone.getAllCyclones().then((res) => {
+            res.should.be.a('Array').that.has.lengthOf(0);
+            done();
+        });
+    });
+
     it('should not post a cyclone alert', (done) => {
         const requestBody = {
             telegramId: 553888617,
@@ -68,6 +92,22 @@ describe('Ciclone', () => {
         getStub.restore();
 
         ciclone.getCycloneAlert(553888617).then((res) => {
+            res.should.have.property('code');
+            res.code.should.be.a('String').that.is.oneOf(['ECONNREFUSED', 'ENOTFOUND']);
+            done();
+        });
+    });
+
+    it('should not delete a cyclone alert', (done) => {
+        ciclone.deleteCycloneAlert(553888617).then((res) => {
+            res.should.have.property('code');
+            res.code.should.be.a('String').that.is.oneOf(['ECONNREFUSED', 'ENOTFOUND']);
+            done();
+        });
+    });
+
+    it('should not get all cyclones', (done) => {
+        ciclone.getAllCyclones().then((res) => {
             res.should.have.property('code');
             res.code.should.be.a('String').that.is.oneOf(['ECONNREFUSED', 'ENOTFOUND']);
             done();
