@@ -31,7 +31,7 @@ describe('POST authentication', () => {
             minutes: "01000101",
             sport: "01010010",
             locals: 333,
-            days: 'I am totally an Array, I swear',
+            days: 15344,
         };
         const errorMessage = auth.notificationAuthentication(notification);
 
@@ -59,12 +59,15 @@ describe('POST authentication', () => {
 
 describe('Cyclone Alert authentication', () => {
     it('should not redirect cyclone alert', (done) => {
-        const user = {
+        const userOne = {
             telegramId: {astring: "Wait, what"},
         };
-        const errorMessage = auth.cycloneAuthentication(user);
+        const userTwo = {};
+        const errorMessageOne = auth.cycloneAuthentication(userOne);
+        const errorMessageTwo = auth.cycloneAuthentication(userTwo);
         
-        errorMessage.should.be.a('String');
+        errorMessageOne.should.be.a('String');
+        errorMessageTwo.should.be.a('String');
         done();
     });
 

@@ -8,13 +8,13 @@ const should = chai.should();
 
 describe('NOTIFICATION TREATMENT UTILS', () => {
   it('should convert days to integers', () => {
-    const days = ['segunda', 'sábado'];
+    const days = ['segunda', ,'terça', 'quarta', 'quinta', 'sexta', 'domingo', 'sábado', 'yeet'];
     const convertedDays = notification.convertDay(days);
 
     convertedDays.should.be.a('Array');
-    convertedDays.length.should.be.eql(2);
+    convertedDays.length.should.be.eql(7);
     convertedDays[0].should.be.eql(1);
-    convertedDays[1].should.be.eql(6);
+    convertedDays[1].should.be.eql(2);
   }).timeout(5000);
 
   it('should convert a string to an integer', () => {
