@@ -40,16 +40,10 @@ module.exports = {
     const URL = `${global.URL_SPORT}/createNotification`;
     const dataJson = json;
     const daysArray = [];
-    const localsArray = [];
 
     if (typeof dataJson.days !== 'object') {
       daysArray.push(dataJson.days);
       dataJson.days = daysArray;
-    }
-
-    if (typeof dataJson.locals !== 'object') {
-      localsArray.push(dataJson.locals);
-      dataJson.locals = localsArray;
     }
 
     dataJson.days = notification.convertDay(dataJson.days);
@@ -57,7 +51,6 @@ module.exports = {
     dataJson.minutesBefore = notification.convertTimeBefore(dataJson.minutesBefore);
     dataJson.hour = parseInt(dataJson.hour, 10);
     dataJson.minutes = parseInt(dataJson.minutes, 10);
-
     axios.post(URL, dataJson).then((res) => {
       resolve(res.data);
     }).catch(() => {

@@ -19,7 +19,7 @@ module.exports = {
     let errorMessage = '';
     const parameters = ['telegramId',
       'hoursBefore', 'minutesBefore',
-      'hour', 'minutes', 'sport', 'locals'];
+      'hour', 'minutes', 'sport', 'local'];
 
     parameters.forEach((value) => {
       const bodyType = typeof (body[value]);

@@ -90,7 +90,6 @@ router.post('/ciclone', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  console.log(req);
   const notifyAuthenticationResponse = authentication.notifyAuthentication(req.body);
   if (!(notifyAuthenticationResponse)) {
     notify.sendNotification(req.body).then((response) => {
