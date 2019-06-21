@@ -10,14 +10,76 @@ const chaiHttp = require('chai-http');
 const should = chai.should();
 
 describe('Root router', () => {
-    it('should return endpoints');
+    let notifyStub;
+
+    before(() => {
+        notifyStub = sinon.stub(notify, 'sendNotification');
+    });
+
+    after(() => {
+        notifyStub.restore();
+    });
+
+    it('should return ok', (done) => {
+        notifyStub.resolves({ok: true});
+    
+        chai.request(app).post('/')
+            .send({
+                cyclones: [
+                    {
+                        name: "Fast boy",
+                        originBasin: "Every",
+                        currentBasin: "Where",
+                        startDate: "00/00/0000",
+                        endDate: "31/12/9999",
+                        stormType: "Sonic Boom",
+                        windSpeed: "9001",
+                        class: "cyclone"
+                    }
+                ],
+                users: [
+                    {
+                        telegramId: "12254862",
+                        class: "cycloneAlert"
+                    }
+                ]
+            }).end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.a('Object');
+            res.body.should.have.property('ok').eql(true);
+            done();
+        });
+    });
+
+    it('should return an authentication error', (done) => {
+        chai.request(app).post('/')
+            .send({
+                users: [
+                    {
+                        telegramId: "12254862",
+                        class: "cycloneAlert"
+                    }
+                ]
+            }).end((err, res) => {
+            res.should.have.status(200);
+            res.text.should.be.a('String');
+            done();
+        });
+    });
+
+    it('should return endpoints', (done) => {
+        chai.request(app).get('/esporte').end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.a('Array');
+            done();
+        });
+    });
 });
 describe('Esporte Router', () => {
     let esporteStub, notifyStub;
 
     before(() => {
         esporteStub = sinon.stub(esporte);
-        //notifyStub = sinon.stub(notify);
     });
 
     after(() => {
@@ -140,9 +202,9 @@ describe('Esporte Router', () => {
             'sports' or 'climate' or 'delete' or 'show', but instead got 'anattemptwasmade'.`);
         
         chai.request(app).get('/esporte')
-            .query({intent: 'climate', place: 'brasilia'}).end((err, res) => {
+            .query({intent: 'trueintent', place: 'brasilia'}).end((err, res) => {
             res.should.have.status(200);
-            res.body.should.be.a('String');
+            res.text.should.be.a('String');
             done();
         });
     });
@@ -281,4 +343,16 @@ describe('Ciclone Router', () => {
             done();
         });
     });
+
+    it('should return an authentication error', (done) => {
+        chai.request(app).post('/ciclone').end((err, res) => {
+            res.should.have.status(200);
+            res.text.should.be.a('String');
+            done();
+        });
+    });
+});
+
+describe('Notify router', () => {
+    
 });
