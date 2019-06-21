@@ -7,6 +7,8 @@ const ciclone = require('../routes/gaiaCicloneRouter');
 const notify = require('../routes/gaiaNotifyRouter');
 const chaiHttp = require('chai-http');
 
+chai.use(chaiHttp);
+
 const should = chai.should();
 
 describe('Root router', () => {
@@ -68,13 +70,14 @@ describe('Root router', () => {
     });
 
     it('should return endpoints', (done) => {
-        chai.request(app).get('/esporte').end((err, res) => {
+        chai.request(app).get('/').end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('Array');
             done();
         });
     });
 });
+
 describe('Esporte Router', () => {
     let esporteStub, notifyStub;
 
