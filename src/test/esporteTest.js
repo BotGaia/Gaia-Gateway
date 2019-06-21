@@ -110,7 +110,7 @@ describe('Esporte', () => {
       };
         
       getStub.withArgs(`${global.URL_SPORT}/listLocales`, { params })
-      .resolves(getResponse);
+          .resolves(getResponse);
       
       esporte.getLocal('brasilia').then((res) => {
         res.should.be.a('Array');
@@ -121,19 +121,85 @@ describe('Esporte', () => {
       });
     });
 
+    it('should post a notification', (done) => {
+      const requestBody = {
+        telegramId: '553888617',
+        days: 'segunda-feira',
+        minutesBefore: '12',
+        hoursBefore: '2',
+        hour: '12',
+        minutes: '12',
+        sport: 'kitesurf',
+        locals: 'rio de janeiro'
+      };
+      const getResponse = {
+        data: {
+          days: [
+            1
+          ],
+          locals: [
+            'rio de janeiro'
+          ],
+          _id: '5d0ceffd47458b001d8dc96f',
+          class: 'notification',
+          telegramId: '553888617',
+          sport: 'kitesurf',
+          hour: 12,
+          minutes: 12,
+          hoursBefore: 10,
+          minutesBefore: 0,
+          date: '2019-06-21T11:55:57.482Z',
+          __v: 0
+        }
+      };
+        
+      postStub.resolves(getResponse);
+      
+      esporte.postNotification(requestBody).then((res) => {
+        res.should.be.a('Object');
+        res.should.have.property('days');
+        res.should.have.property('locals');
+        res.should.have.property('class').eql('notification');
+        res.should.have.property('date').eql('2019-06-21T11:55:57.482Z');
+        done();
+      });
+    });
+
     it('should not get climate information', (done) => {
       getStub.restore();
 
       esporte.getClimate('shameonyou', 'brasilia').then((res) => {
-          res.should.be.a('Object');
-          res.should.have.property('cod').eql(400);
-          done();
+        res.should.be.a('Object');
+        res.should.have.property('cod').eql(400);
+        done();
       });
     });
     
     it('should not get a locations list', (done) => {
       esporte.getClimate('shameonyou', 'brasilia').then((res) => {
         res.should.be.a('Object');
+        res.should.have.property('cod').eql(400);
+        done();
+      });
+    });
+
+    it('should not post a notification', (done) => {
+      const requestBody = {
+        telegramId: '553888617',
+        days: 'segunda-feira',
+        minutesBefore: '12',
+        hoursBefore: '2',
+        hour: '12',
+        minutes: '12',
+        sport: 'kitesurf',
+        locals: 'rio de janeiro'
+      };
+
+      postStub.restore();
+
+      esporte.postNotification(requestBody).then((res) => {
+        res.should.be.a('Object');
+        res.should.have.property('cod').eql(400);
         done();
       });
     });
