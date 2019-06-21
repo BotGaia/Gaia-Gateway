@@ -6,6 +6,13 @@ const axios = require('axios');
 const should = chai.should();
 
 describe('Esporte', () => {
+    let getStub, postStub;
+    
+    before(() => {
+      getStub = sinon.stub(axios, 'get');
+      postStub = sinon.stub(axios, 'post');
+    });
+
     it('should get climate information', (done) => {
         const params = {
             place: 'brasilia',
@@ -27,8 +34,7 @@ describe('Esporte', () => {
             }
         };
         
-        const stub = sinon.stub(axios, 'get');
-        stub.withArgs(`${global.URL_SPORT}/climate`, { params })
+        getStub.withArgs(`${global.URL_SPORT}/climate`, { params })
             .resolves(getResponse);
 
         esporte.getClimate('climate', 'brasilia').then((res) => {
@@ -47,7 +53,88 @@ describe('Esporte', () => {
             res.should.have.property('sunset');
             done();
         });
+    });
+    
+    it('should get a locations list', (done) => {
+      const params = {
+          local: 'brasilia',
+        };
+      const getResponse = {
+        data: [
+          {
+            name: 'Brasil',
+            lat: -10.3333333,
+            lng: -53.2
+          },
+          {
+            name: 'Distrito Federal, Brasil',
+            lat: -15.7754462,
+            lng: -47.7970891
+          },
+          {
+            name: 'Brasilia, El Jardín, Perimetro Urbano Pereira, Colômbia',
+            lat: 4.81159,
+            lng: -75.7060118
+          },
+          {
+            name: 'São Roberto, Brasilia, Microrregião de Salgado, Brasil',
+            lat: -0.8953167,
+            lng: -47.476385
+          },
+          {
+            name: 'Abaetetuba, Brasilia, Microrregião de Cametá, Brasil',
+            lat: -1.9188283,
+            lng: -48.9031217
+          },
+          {
+            name: 'Lagarto, Brasilia, Microrregião do Centro Sul Sergipano, Brasil',
+            lat: -10.8979152,
+            lng: -37.5523998
+          },
+          {
+            name: 'Alto Alegre, Brasilia, Microrregião de Boa Vista, Brasil',
+            lat: 3.1827175,
+            lng: -61.2181741
+          },
+          {
+            name: 'Brasilia, Meta, Colômbia',
+            lat: 3.746319,
+            lng: -73.7304833
+          },
+          {
+            name: 'La Brasilia, Arauca, Colômbia',
+            lat: 6.9881247,
+            lng: -71.4934902
+          }
+        ]
+      };
+        
+      getStub.withArgs(`${global.URL_SPORT}/listLocales`, { params })
+      .resolves(getResponse);
+      
+      esporte.getLocal('brasilia').then((res) => {
+        res.should.be.a('Array');
+        res[0].should.have.property('name').eql('Brasil');
+        res[0].should.have.property('lat').eql(-10.3333333);
+        res[0].should.have.property('lng').eql(-53.2);
+        done();
+      });
+    });
 
-        stub.restore();
+    it('should not get climate information', (done) => {
+      getStub.restore();
+
+      esporte.getClimate('shameonyou', 'brasilia').then((res) => {
+          res.should.be.a('Object');
+          res.should.have.property('cod').eql(400);
+          done();
+      });
+    });
+    
+    it('should not get a locations list', (done) => {
+      esporte.getClimate('shameonyou', 'brasilia').then((res) => {
+        res.should.be.a('Object');
+        done();
+      });
     });
 });
