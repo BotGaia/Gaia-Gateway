@@ -264,14 +264,14 @@ describe('Esporte', () => {
 
     it('should not delete a notification', (done) => {
       esporte.deleteNotification('553888617', '0').then((res) => {
-        res.should.be.a('String').that.equal('ECONNREFUSED');
+        res.should.be.a('String').that.is.oneOf(['ECONNREFUSED', 'ENOTFOUND']);
         done();
       });
     });
 
     it('should not get a notification', (done) => {
       esporte.getNotification('553888617').then((res) => {
-        res.should.be.a('String').that.equal('ECONNREFUSED');
+        res.should.be.a('String').that.is.oneOf(['ECONNREFUSED', 'ENOTFOUND']);
         done();
       });
     });
