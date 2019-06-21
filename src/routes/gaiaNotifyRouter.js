@@ -8,7 +8,6 @@ function sendMessage(message, notification) {
       chat_id: notification.telegramId,
       text: message,
     };
-
     axios.get(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, { params })
       .then((res) => {
         resolve(res.data);
@@ -18,19 +17,19 @@ function sendMessage(message, notification) {
   });
 }
 
-function recommendSport(conditions, notification, index) {
+function recommendSport(conditions, notification) {
   switch (conditions.sportResult) {
     case 'favorable':
       return `As condições metereológicas previstas para ${notification.day}/
-        ${notification.month} em ${notification.locals[index]} estão favoráveis
+        ${notification.month} em ${notification.local} estão favoráveis
         para a prática de ${notification.sport}.`;
     case 'reservation':
       return `Algumas condições metereológicas previstas para ${notification.day}/
-        ${notification.month} em ${notification.locals[index]} estão favoráveis
+        ${notification.month} em ${notification.local} estão favoráveis
         para a prática de ${notification.sport}.`;
     case 'alert':
       return `Poucas condições metereológicas previstas para ${notification.day}/
-        ${notification.month} em ${notification.locals[index]} estão favoráveis
+        ${notification.month} em ${notification.local} estão favoráveis
         para a prática de ${notification.sport}.`;
     case 'not':
       return `Para ${notification.day}/${notification.month} em ${notification.locals[index]}
@@ -81,19 +80,17 @@ module.exports = {
     } else {
       let messages = [];
       const postURL = `${global.URL_SPORT}/sportForecast`;
-
+      console.log("post to sportForecast")
       axios.post(postURL, notification).then(async (res) => {
-        for (const index in res.data) {
-          if (res.data) {
-            await sendMessage(recommendSport(res.data[index], notification, index), notification);
-            await setClimateMessages(messages, res.data[index]);
-            for (const messageIndex in messages) {
-              if (messages) {
-                await sendMessage(messages[messageIndex], notification);
-              }
+        if (res.config.data) {
+          await sendMessage(recommendSport(res.config.data, notification), notification);
+          await setClimateMessages(messages, res.config.data);
+          for (const messageIndex in messages) {
+            if (messages) {
+              await sendMessage(messages[messageIndex], notification);
             }
-            messages = [];
           }
+          messages = [];
         }
         resolve(res.data);
       });
