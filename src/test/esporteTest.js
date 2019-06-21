@@ -165,6 +165,26 @@ describe('Esporte', () => {
       });
     });
 
+    it('should get a notification');
+    
+    it('should delete a notification', (done) => {
+      const params = {
+          id: '553888617',
+          number: '0'
+      };
+      const getResponse = {
+          data: 'Notificação excluída.'
+      };
+      
+      getStub.withArgs(`${global.URL_SPORT}/deleteNotification`, { params })
+          .resolves(getResponse);
+
+      esporte.deleteNotification('553888617', '0').then((res) => {
+          res.should.be.a('String');
+          done();
+      });
+    });
+
     it('should not get climate information', (done) => {
       getStub.restore();
 
@@ -174,7 +194,7 @@ describe('Esporte', () => {
         done();
       });
     });
-    
+
     it('should not get a locations list', (done) => {
       esporte.getClimate('shameonyou', 'brasilia').then((res) => {
         res.should.be.a('Object');
@@ -203,4 +223,13 @@ describe('Esporte', () => {
         done();
       });
     });
+
+    it('should not delete a notification', (done) => {
+      esporte.deleteNotification('553888617', '0').then((res) => {
+        res.should.be.a('String').that.equal('ECONNREFUSED');
+        done();
+      });
+    });
+
+    it('should not get a notification');
 });

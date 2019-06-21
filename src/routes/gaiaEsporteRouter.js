@@ -77,7 +77,7 @@ module.exports = {
         .then((response) => {
           resolve(response.data);
         }).catch((err) => {
-          resolve(err.response.data);
+          resolve(err.code);
         });
     });
   },
