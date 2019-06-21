@@ -20,19 +20,19 @@ function sendMessage(message, notification) {
 function recommendSport(conditions, notification) {
   switch (conditions.sportResult) {
     case 'favorable':
-      return `As condições metereológicas previstas para ${notification.day}/
-        ${notification.month} em ${notification.local} estão favoráveis
+      return `As condições metereológicas previstas para ${notification.date.getDate()}/
+        ${notification.date.getMonth() + 1} em ${notification.local} estão favoráveis
         para a prática de ${notification.sport}.`;
     case 'reservation':
-      return `Algumas condições metereológicas previstas para ${notification.day}/
-        ${notification.month} em ${notification.local} estão favoráveis
+      return `Algumas condições metereológicas previstas para ${notification.date.getDate()}/
+        ${notification.date.getMonth() + 1} em ${notification.local} estão favoráveis
         para a prática de ${notification.sport}.`;
     case 'alert':
-      return `Poucas condições metereológicas previstas para ${notification.day}/
-        ${notification.month} em ${notification.local} estão favoráveis
+      return `Poucas condições metereológicas previstas para ${notification.date.getDate()}/
+        ${notification.date.getMonth() + 1} em ${notification.local} estão favoráveis
         para a prática de ${notification.sport}.`;
     case 'not':
-      return `Para ${notification.day}/${notification.month} em ${notification.locals[index]}
+      return `Para ${notification.date.getDate()}/${notification.date.getMonth() + 1} em ${notification.local}
         não é recomendada prática de ${notification.sport}.`;
     default:
       return 'error';
@@ -67,6 +67,8 @@ Velocidade dos ventos: ${cyclone.windSpeed} m/s\n\n`;
 
 module.exports = {
   sendNotification: notification => new Promise((resolve) => {
+    const usefulNotification = notification;
+    sefulNotification.date = new Date(notification.date);
     if (notification.users && notification.cyclones) {
       notification.users.forEach(async (user) => {
         if (notification.cyclones[0]) {
@@ -80,14 +82,13 @@ module.exports = {
     } else {
       let messages = [];
       const postURL = `${global.URL_SPORT}/sportForecast`;
-      console.log("post to sportForecast")
-      axios.post(postURL, notification).then(async (res) => {
-        if (res.config.data) {
-          await sendMessage(recommendSport(res.config.data, notification), notification);
-          await setClimateMessages(messages, res.config.data);
+      axios.post(postURL, usefulNotification).then(async (res) => {
+        if (res.data) {
+          await sendMessage(recommendSport(res.data, usefulNotification), usefulNotification);
+          await setClimateMessages(messages, res.data);
           for (const messageIndex in messages) {
             if (messages) {
-              await sendMessage(messages[messageIndex], notification);
+              await sendMessage(messages[messageIndex], usefulNotification);
             }
           }
           messages = [];
