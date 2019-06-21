@@ -12,8 +12,8 @@ function sendMessage(message, notification) {
     axios.get(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, { params })
       .then((res) => {
         resolve(res.data);
-      }).catch(() => {
-        resolve(JSON.parse('{"cod": 400}'));
+      }).catch((err) => {
+        resolve({ok: false, error: err});
       });
   });
 }
@@ -67,7 +67,7 @@ Velocidade dos ventos: ${cyclone.windSpeed} m/s\n\n`;
 }
 
 module.exports = {
-  sendNotification: notification => new Promise((resolve) => {
+  sendNotification: notification => new Promise(async (resolve) => {
     if (notification.users && notification.cyclones) {
       try {
         notification.users.forEach(async (user) => {
@@ -81,26 +81,39 @@ module.exports = {
         });
         resolve({ok: true});
       } catch(err) {
-        resolve(err);
+        resolve({ok: false, error: err});
       }
     } else {
       let messages = [];
+      let answer;
       const postURL = `${global.URL_SPORT}/sportForecast`;
 
       axios.post(postURL, notification).then(async (res) => {
-        for (const index in res.data) {
-          if (res.data) {
-            await sendMessage(recommendSport(res.data[index], notification, index), notification);
-            await setClimateMessages(messages, res.data[index]);
-            for (const messageIndex in messages) {
-              if (messages) {
-                await sendMessage(messages[messageIndex], notification);
+        try{
+          for (const index in res.data) {
+            if (res.data) {
+              answer = await sendMessage(recommendSport(res.data[index], notification, index), notification);
+              if(answer.ok === false) {
+                throw(answer);
               }
+              await setClimateMessages(messages, res.data[index]);
+              for (const messageIndex in messages) {
+                if (messages) {
+                  answer = await sendMessage(messages[messageIndex], notification);
+                  if(answer.ok === false) {
+                    throw(answer);
+                  }
+                }
+              }
+              messages = [];
             }
-            messages = [];
           }
+          resolve({ok: true});
+        } catch(err) {
+          resolve(err);
         }
-        resolve(res.data);
+      }).catch((err) => {
+        resolve({ok: false, error: err});
       });
     }
   }),
