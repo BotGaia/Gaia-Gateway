@@ -8,7 +8,7 @@ const should = chai.should();
 
 describe('NOTIFICATION TREATMENT UTILS', () => {
   it('should convert days to integers', () => {
-    const days = ['segunda', ,'terça', 'quarta', 'quinta', 'sexta', 'domingo', 'sábado', 'yeet'];
+    const days = ['segunda', 'terça', 'quarta', 'quinta', 'sexta', 'domingo', 'sábado', 'yeet'];
     const convertedDays = notification.convertDay(days);
 
     convertedDays.should.be.a('Array');

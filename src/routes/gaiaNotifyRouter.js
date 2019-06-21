@@ -13,7 +13,7 @@ function sendMessage(message, notification) {
       .then((res) => {
         resolve(res.data);
       }).catch((err) => {
-        resolve({ok: false, error: err});
+        resolve({ ok: false, error: err });
       });
   });
 }
@@ -79,9 +79,9 @@ module.exports = {
             sendMessage(setCycloneMessage(cyclone), user);
           });
         });
-        resolve({ok: true});
-      } catch(err) {
-        resolve({ok: false, error: err});
+        resolve({ ok: true });
+      } catch (err) {
+        resolve({ ok: false, error: err });
       }
     } else {
       let messages = [];
@@ -89,31 +89,32 @@ module.exports = {
       const postURL = `${global.URL_SPORT}/sportForecast`;
 
       axios.post(postURL, notification).then(async (res) => {
-        try{
+        try {
           for (const index in res.data) {
             if (res.data) {
-              answer = await sendMessage(recommendSport(res.data[index], notification, index), notification);
-              if(answer.ok === false) {
-                throw(answer);
+              answer = await sendMessage(recommendSport(res.data[index],
+                notification, index), notification);
+              if (answer.ok === false) {
+                throw (answer);
               }
               await setClimateMessages(messages, res.data[index]);
               for (const messageIndex in messages) {
                 if (messages) {
                   answer = await sendMessage(messages[messageIndex], notification);
-                  if(answer.ok === false) {
-                    throw(answer);
+                  if (answer.ok === false) {
+                    throw (answer);
                   }
                 }
               }
               messages = [];
             }
           }
-          resolve({ok: true});
-        } catch(err) {
+          resolve({ ok: true });
+        } catch (err) {
           resolve(err);
         }
       }).catch((err) => {
-        resolve({ok: false, error: err});
+        resolve({ ok: false, error: err });
       });
     }
   }),
