@@ -13,11 +13,10 @@ describe('Root router', () => {
     it('should return endpoints');
 });
 describe('Esporte Router', () => {
-    let esporteStub, cicloneStub, notifyStub;
+    let esporteStub, notifyStub;
 
     before(() => {
         esporteStub = sinon.stub(esporte);
-        //cicloneStub = sinon.stub(ciclone);
         //notifyStub = sinon.stub(notify);
     });
 
@@ -136,7 +135,7 @@ describe('Esporte Router', () => {
         });
     });
 
-    it('should return a authentication error', (done) => {
+    it('should return an authentication error', (done) => {
         esporteStub.getClimate.resolves(`IntentError: Expected Intent to be equal to
             'sports' or 'climate' or 'delete' or 'show', but instead got 'anattemptwasmade'.`);
         
@@ -144,6 +143,141 @@ describe('Esporte Router', () => {
             .query({intent: 'climate', place: 'brasilia'}).end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('String');
+            done();
+        });
+    });
+
+    it('should return a notification post confirmation', (done) => {
+        esporteStub.postNotification.resolves({
+            days: [
+              1,
+              5
+            ],
+            locals: [
+              "praça do relógio"
+            ],
+            _id: "5d0d469947458b001d8dc999",
+            class: "notification",
+            telegramId: "12455",
+            sport: "kitesurf",
+            hour: 23,
+            minutes: 12,
+            hoursBefore: 2,
+            minutesBefore: 11,
+            date: "2019-06-21T18:05:29.247Z",
+            __v: 0
+          });
+
+        chai.request(app).post('/esporte')
+            .send({
+                telegramId: "12455",
+                hoursBefore: "21",
+                minutesBefore: "1",
+                hour: "23",
+                minutes: "12",
+                sport: "kitesurf",
+                locals: "praça do relógio",
+                days: ["segunda-feira", "sexta-feira"]
+            }).end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.a('Object');
+            res.body.should.have.property('days');
+            done();
+        });
+    });
+
+    it('should return an authentication error', (done) => {
+        chai.request(app).post('/esporte')
+            .send({
+                hoursBefore: "21",
+                minutesBefore: "1",
+                hour: "23",
+                minutes: "12",
+                sport: "kitesurf",
+                locals: "praça do relógio",
+                days: ["segunda-feira", "sexta-feira"]
+            }).end((err, res) => {
+            res.should.have.status(200);
+            res.text.should.be.a('String');
+            done();
+        });
+    });
+});
+
+describe('Ciclone Router', () => {
+    let cicloneStub;
+
+    before(() => {
+        cicloneStub = sinon.stub(ciclone);
+    });
+
+    after(() => {
+        cicloneStub.getCycloneAlert.restore();
+        cicloneStub.deleteCycloneAlert.restore();
+        cicloneStub.postCycloneAlert.restore();
+        cicloneStub.getAllCyclones.restore();
+    });
+
+    it('should return a cyclone alert post confirmation', (done) => {
+        cicloneStub.postCycloneAlert.resolves({
+            _id: "5d0d4c0c39cda7001d80acca",
+            class: "cycloneAlert",
+            telegramId: "1532479",
+            __v: 0
+          });
+
+        chai.request(app).post('/ciclone')
+            .send({
+                telegramId: "1532479",
+            }).end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.a('Object');
+            res.body.should.have.property('telegramId');
+            done();
+        });
+    });
+
+    it('should return a cyclone alert', (done) => {
+        cicloneStub.getCycloneAlert.resolves({
+            _id: "5d0d4c0c39cda7001d80acca",
+            class: "cycloneAlert",
+            telegramId: "1532479",
+            __v: 0
+          });
+
+        chai.request(app).get('/ciclone')
+            .query({intent: 'show', id: '1532479'}).end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.a('Object');
+            res.body.should.have.property('class');
+            done();
+        });
+    });
+
+    it('should return a cyclone alert deletion confirmation', (done) => {
+        cicloneStub.deleteCycloneAlert.resolves({
+            _id: "5d0d4c0c39cda7001d80acca",
+            class: "cycloneAlert",
+            telegramId: "1532479",
+            __v: 0
+          });
+
+        chai.request(app).get('/ciclone')
+            .query({intent: 'delete', id: '1532479'}).end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.a('Object');
+            res.body.should.have.property('class');
+            done();
+        });
+    });
+
+    it('should return all cyclones', (done) => {
+        cicloneStub.getAllCyclones.resolves([]);
+
+        chai.request(app).get('/ciclone')
+            .query({intent: 'allCyclones'}).end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.a('Array').that.has.lengthOf(0);
             done();
         });
     });
