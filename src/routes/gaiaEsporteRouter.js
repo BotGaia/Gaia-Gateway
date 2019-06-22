@@ -55,7 +55,6 @@ module.exports = {
     dataJson.minutesBefore = notification.convertTimeBefore(dataJson.minutesBefore);
     dataJson.hour = parseInt(dataJson.hour, 10);
     dataJson.minutes = parseInt(dataJson.minutes, 10);
-
     axios.post(URL, dataJson).then((res) => {
       resolve(res.data);
     }).catch(() => {
@@ -63,11 +62,11 @@ module.exports = {
     });
   }),
 
-  deleteNotification: (id, number) => {
+  deleteNotification: (telegramId, userChoice) => {
     const URL = `${global.URL_SPORT}/deleteNotification`;
     const params = {
-      id,
-      number,
+      id: telegramId,
+      number: userChoice,
     };
 
     return new Promise((resolve) => {
@@ -75,15 +74,15 @@ module.exports = {
         .then((response) => {
           resolve(response.data);
         }).catch((err) => {
-          resolve(err.code);
+          resolve(err.response.data);
         });
     });
   },
 
-  getNotification: (id) => {
+  getNotification: (telegramId) => {
     const URL = `${global.URL_SPORT}/userNotification`;
     const params = {
-      id,
+      id: telegramId,
     };
 
     return new Promise((resolve) => {
@@ -91,7 +90,7 @@ module.exports = {
         .then((response) => {
           resolve(response.data);
         }).catch((err) => {
-          resolve(err.code);
+          resolve(err.response.data);
         });
     });
   },
