@@ -11,8 +11,8 @@ function sendMessage(message, notification) {
     axios.get(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, { params })
       .then((res) => {
         resolve(res.data);
-      }).catch(() => {
-        resolve(JSON.parse('{"cod": 400}'));
+      }).catch((err) => {
+        resolve({ ok: false, error: err });
       });
   });
 }
@@ -70,30 +70,50 @@ module.exports = {
     const usefulNotification = notification;
     usefulNotification.date = new Date(notification.date);
     if (notification.users && notification.cyclones) {
-      notification.users.forEach(async (user) => {
-        if (notification.cyclones[0]) {
-          await sendMessage('Notificações de Ciclones:', user);
-        }
+      try {
+        notification.users.forEach(async (user) => {
+          if (notification.cyclones[0]) {
+            await sendMessage('Notificações de Ciclones:', user);
+          }
 
-        notification.cyclones.forEach((cyclone) => {
-          sendMessage(setCycloneMessage(cyclone), user);
+          notification.cyclones.forEach((cyclone) => {
+            sendMessage(setCycloneMessage(cyclone), user);
+          });
         });
-      });
+        resolve({ ok: true });
+      } catch (err) {
+        resolve({ ok: false, error: err });
+      }
     } else {
       let messages = [];
+      let answer;
       const postURL = `${global.URL_SPORT}/sportForecast`;
-      axios.post(postURL, usefulNotification).then(async (res) => {
-        if (res.data) {
-          await sendMessage(recommendSport(res.data, usefulNotification), usefulNotification);
-          await setClimateMessages(messages, res.data);
-          for (const messageIndex in messages) {
-            if (messages) {
-              await sendMessage(messages[messageIndex], usefulNotification);
+
+      axios.post(postURL, notification).then(async (res) => {
+        try {
+          if (res.data) {
+            answer = await sendMessage(recommendSport(res.data, usefulNotification),
+              usefulNotification);
+            if (answer.ok === false) {
+              throw (answer);
             }
+            await setClimateMessages(messages, res.data);
+            for (const messageIndex in messages) {
+              if (messages) {
+                answer = await sendMessage(messages[messageIndex], usefulNotification);
+                if (answer.ok === false) {
+                  throw (answer);
+                }
+              }
+            }
+            messages = [];
           }
-          messages = [];
+          resolve({ ok: true });
+        } catch (err) {
+          resolve(err);
         }
-        resolve(res.data);
+      }).catch((err) => {
+        resolve({ ok: false, error: err });
       });
     }
   }),

@@ -58,11 +58,11 @@ module.exports = {
     });
   }),
 
-  deleteNotification: (telegramId, userChoice) => {
+  deleteNotification: (id, number) => {
     const URL = `${global.URL_SPORT}/deleteNotification`;
     const params = {
-      id: telegramId,
-      number: userChoice,
+      id,
+      number,
     };
 
     return new Promise((resolve) => {
@@ -70,15 +70,15 @@ module.exports = {
         .then((response) => {
           resolve(response.data);
         }).catch((err) => {
-          resolve(err.response.data);
+          resolve(err.code);
         });
     });
   },
 
-  getNotification: (telegramId) => {
+  getNotification: (id) => {
     const URL = `${global.URL_SPORT}/userNotification`;
     const params = {
-      id: telegramId,
+      id,
     };
 
     return new Promise((resolve) => {
@@ -86,7 +86,7 @@ module.exports = {
         .then((response) => {
           resolve(response.data);
         }).catch((err) => {
-          resolve(err.response.data);
+          resolve(err.code);
         });
     });
   },
