@@ -18,22 +18,30 @@ function sendMessage(message, notification) {
 }
 
 function recommendSport(conditions, notification) {
+  let partOne;
+  let partTwo;
+  let partThree;
+
   switch (conditions.sportResult) {
     case 'favorable':
-      return `As condições metereológicas previstas para ${notification.date.getDate()}/
-        ${notification.date.getMonth() + 1} em ${notification.local} estão favoráveis
-        para a prática de ${notification.sport}.`;
+      partOne = `As condições metereológicas previstas para ${notification.date.getDate()}/`;
+      partTwo = `${notification.date.getMonth() + 1} em ${notification.local} estão favoráveis`;
+      partThree = `para a prática de ${notification.sport}.\n\n`;
+      return `${partOne}${partTwo}${partThree}`;
     case 'reservation':
-      return `Algumas condições metereológicas previstas para ${notification.date.getDate()}/
-        ${notification.date.getMonth() + 1} em ${notification.local} estão favoráveis
-        para a prática de ${notification.sport}.`;
+      partOne = `Algumas condições metereológicas previstas para ${notification.date.getDate()}/`;
+      partTwo = `${notification.date.getMonth() + 1} em ${notification.local} estão favoráveis`;
+      partThree = `para a prática de ${notification.sport}.\n\n`;
+      return `${partOne}${partTwo}${partThree}`;
     case 'alert':
-      return `Poucas condições metereológicas previstas para ${notification.date.getDate()}/
-        ${notification.date.getMonth() + 1} em ${notification.local} estão favoráveis
-        para a prática de ${notification.sport}.`;
+      partOne = `Poucas condições metereológicas previstas para ${notification.date.getDate()}/`;
+      partTwo = `${notification.date.getMonth() + 1} em ${notification.local} estão favoráveis`;
+      partThree = `para a prática de ${notification.sport}.\n\n`;
+      return `${partOne}${partTwo}${partThree}`;
     case 'not':
-      return `Para ${notification.date.getDate()}/${notification.date.getMonth() + 1} em ${notification.local}
-        não é recomendada prática de ${notification.sport}.`;
+      partOne = `Para ${notification.date.getDate()}/${notification.date.getMonth() + 1} em ${notification.local}`;
+      partTwo = `não é recomendada prática de ${notification.sport}.\n\n`;
+      return `${partOne}${partTwo}`;
     default:
       return 'error';
   }
@@ -41,11 +49,11 @@ function recommendSport(conditions, notification) {
 
 function setClimateMessages(messages, conditions) {
   messages.push(`Para essa data, neste local, minha temperatura é ${conditions.weather.temperature} °C,`);
-  messages.push(`com umidade de ${conditions.weather.humidity}%`);
-  messages.push(`e pressão ${conditions.weather.pressure} atm.`);
+  messages.push(` com umidade de ${conditions.weather.humidity}%`);
+  messages.push(` e pressão ${conditions.weather.pressure} atm.`);
   messages.push(`Meus ventos sopram para ${conditions.weather.windyDegrees},`);
-  messages.push(`com velocidade de ${conditions.weather.windySpeed} m/s`);
-  messages.push(`e apresento ${conditions.weather.sky}.`);
+  messages.push(` com velocidade de ${conditions.weather.windySpeed} m/s`);
+  messages.push(` e apresento ${conditions.weather.sky}.`);
 }
 
 function setCycloneMessage(target) {
@@ -89,28 +97,26 @@ module.exports = {
       let answer;
       const postURL = `${global.URL_SPORT}/sportForecast`;
 
-      axios.post(postURL, notification).then(async (res) => {
+      axios.post(postURL, usefulNotification).then(async (res) => {
         try {
           if (res.data) {
-            answer = await sendMessage(recommendSport(res.data, usefulNotification),
-              usefulNotification);
-            if (answer.ok === false) {
-              throw (answer);
-            }
+            let climateMessage = recommendSport(res.data, usefulNotification);
+
             await setClimateMessages(messages, res.data);
             for (const messageIndex in messages) {
               if (messages) {
-                answer = await sendMessage(messages[messageIndex], usefulNotification);
-                if (answer.ok === false) {
-                  throw (answer);
-                }
+                climateMessage = `${climateMessage}${messages[messageIndex]}`;
               }
+            }
+            answer = await sendMessage(climateMessage, usefulNotification);
+            if (answer.ok === false) {
+              throw (answer);
             }
             messages = [];
           }
           resolve({ ok: true });
         } catch (err) {
-          resolve(err);
+          resolve({ ok: false, error: err });
         }
       }).catch((err) => {
         resolve({ ok: false, error: err });
