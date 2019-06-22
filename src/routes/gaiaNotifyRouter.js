@@ -8,7 +8,6 @@ function sendMessage(message, notification) {
       chat_id: notification.telegramId,
       text: message,
     };
-
     axios.get(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, { params })
       .then((res) => {
         resolve(res.data);
@@ -18,22 +17,22 @@ function sendMessage(message, notification) {
   });
 }
 
-function recommendSport(conditions, notification, index) {
+function recommendSport(conditions, notification) {
   switch (conditions.sportResult) {
     case 'favorable':
-      return `As condições metereológicas previstas para ${notification.day}/
-        ${notification.month} em ${notification.locals[index]} estão favoráveis
+      return `As condições metereológicas previstas para ${notification.date.getDate()}/
+        ${notification.date.getMonth() + 1} em ${notification.local} estão favoráveis
         para a prática de ${notification.sport}.`;
     case 'reservation':
-      return `Algumas condições metereológicas previstas para ${notification.day}/
-        ${notification.month} em ${notification.locals[index]} estão favoráveis
+      return `Algumas condições metereológicas previstas para ${notification.date.getDate()}/
+        ${notification.date.getMonth() + 1} em ${notification.local} estão favoráveis
         para a prática de ${notification.sport}.`;
     case 'alert':
-      return `Poucas condições metereológicas previstas para ${notification.day}/
-        ${notification.month} em ${notification.locals[index]} estão favoráveis
+      return `Poucas condições metereológicas previstas para ${notification.date.getDate()}/
+        ${notification.date.getMonth() + 1} em ${notification.local} estão favoráveis
         para a prática de ${notification.sport}.`;
     case 'not':
-      return `Para ${notification.day}/${notification.month} em ${notification.locals[index]}
+      return `Para ${notification.date.getDate()}/${notification.date.getMonth() + 1} em ${notification.local}
         não é recomendada prática de ${notification.sport}.`;
     default:
       return 'error';
@@ -67,7 +66,9 @@ Velocidade dos ventos: ${cyclone.windSpeed} m/s\n\n`;
 }
 
 module.exports = {
-  sendNotification: notification => new Promise(async (resolve) => {
+  sendNotification: notification => new Promise((resolve) => {
+    const usefulNotification = notification;
+    usefulNotification.date = new Date(notification.date);
     if (notification.users && notification.cyclones) {
       try {
         notification.users.forEach(async (user) => {
@@ -90,17 +91,16 @@ module.exports = {
 
       axios.post(postURL, notification).then(async (res) => {
         try {
-          for (const index in res.data) {
             if (res.data) {
-              answer = await sendMessage(recommendSport(res.data[index],
-                notification, index), notification);
+              answer = await sendMessage(recommendSport(res.data, usefulNotification),
+                usefulNotification);
               if (answer.ok === false) {
                 throw (answer);
               }
               await setClimateMessages(messages, res.data[index]);
               for (const messageIndex in messages) {
                 if (messages) {
-                  answer = await sendMessage(messages[messageIndex], notification);
+                  answer = await sendMessage(messages[messageIndex], usefulNotification);
                   if (answer.ok === false) {
                     throw (answer);
                   }
@@ -108,7 +108,6 @@ module.exports = {
               }
               messages = [];
             }
-          }
           resolve({ ok: true });
         } catch (err) {
           resolve(err);
