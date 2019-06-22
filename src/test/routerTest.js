@@ -82,8 +82,7 @@ describe('Root router', () => {
 });
 
 describe('Esporte Router', () => {
-  let esporteStub; let
-    notifyStub;
+  let esporteStub;
 
   before(() => {
     esporteStub = sinon.stub(esporte);
@@ -222,9 +221,7 @@ describe('Esporte Router', () => {
         1,
         5,
       ],
-      locals: [
-        'praça do relógio',
-      ],
+      local: 'praça do relógio',
       _id: '5d0d469947458b001d8dc999',
       class: 'notification',
       telegramId: '12455',
@@ -245,7 +242,7 @@ describe('Esporte Router', () => {
         hour: '23',
         minutes: '12',
         sport: 'kitesurf',
-        locals: 'praça do relógio',
+        local: 'praça do relógio',
         days: ['segunda-feira', 'sexta-feira'],
       }).end((err, res) => {
         res.should.have.status(200);
@@ -264,7 +261,6 @@ describe('Esporte Router', () => {
         minutes: '12',
         sport: 'kitesurf',
         locals: 'praça do relógio',
-        days: ['segunda-feira', 'sexta-feira'],
       }).end((err, res) => {
         res.should.have.status(200);
         res.text.should.be.a('String');

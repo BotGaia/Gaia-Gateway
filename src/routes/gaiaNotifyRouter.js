@@ -91,23 +91,23 @@ module.exports = {
 
       axios.post(postURL, notification).then(async (res) => {
         try {
-            if (res.data) {
-              answer = await sendMessage(recommendSport(res.data, usefulNotification),
-                usefulNotification);
-              if (answer.ok === false) {
-                throw (answer);
-              }
-              await setClimateMessages(messages, res.data[index]);
-              for (const messageIndex in messages) {
-                if (messages) {
-                  answer = await sendMessage(messages[messageIndex], usefulNotification);
-                  if (answer.ok === false) {
-                    throw (answer);
-                  }
+          if (res.data) {
+            answer = await sendMessage(recommendSport(res.data, usefulNotification),
+              usefulNotification);
+            if (answer.ok === false) {
+              throw (answer);
+            }
+            await setClimateMessages(messages, res.data);
+            for (const messageIndex in messages) {
+              if (messages) {
+                answer = await sendMessage(messages[messageIndex], usefulNotification);
+                if (answer.ok === false) {
+                  throw (answer);
                 }
               }
-              messages = [];
             }
+            messages = [];
+          }
           resolve({ ok: true });
         } catch (err) {
           resolve(err);

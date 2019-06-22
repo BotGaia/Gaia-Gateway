@@ -50,7 +50,7 @@ describe('POST authentication', () => {
       hour: '00111111',
       minutes: '12',
       sport: 'leol',
-      locals: 'praça do relógio',
+      local: 'praça do relógio',
       days: ['segunda-feira', 'sexta-feira'],
     };
     const errorMessage = auth.notificationAuthentication(notification);

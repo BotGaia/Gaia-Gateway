@@ -47,33 +47,30 @@ describe('Notify', () => {
       hour: 12,
       minutes: 12,
       sport: 'kitesurf',
-      locals: ['brasilia'],
+      local: 'brasilia',
       day: date.getDay(),
       month: date.getMonth(),
       class: 'notification',
       date,
     };
     const getResponse = {
-      data: [
-        {
-          sportResult: 'not',
-          weather: {
-            date: 'sexta-feira 18:00:00',
-            sky: 'céu limpo',
-            temperature: '26.95',
-            pressure: '1.00',
-            windyDegrees: 'norte',
-            windySpeed: '1.55',
-            temperatureMax: '26.95',
-            temperatureMin: '26.95',
-            humidity: '45',
-          },
+      data: {
+        sportResult: 'not',
+        weather: {
+          date: 'sexta-feira 18:00:00',
+          sky: 'céu limpo',
+          temperature: '26.95',
+          pressure: '1.00',
+          windyDegrees: 'norte',
+          windySpeed: '1.55',
+          temperatureMax: '26.95',
+          temperatureMin: '26.95',
+          humidity: '45',
         },
-      ],
+      },
     };
 
-    stub.withArgs(`${global.URL_SPORT}/sportForecast`, notification)
-      .resolves(getResponse);
+    stub.resolves(getResponse);
 
     notify.sendNotification(notification).then((res) => {
       res.should.have.property('ok').eql(true);
