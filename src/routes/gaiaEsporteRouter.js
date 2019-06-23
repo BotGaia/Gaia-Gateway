@@ -97,4 +97,37 @@ module.exports = {
         });
     });
   },
+
+  getClimateForecast: (place, beforeDate) => {
+    const URL = `${global.URL_SPORT}/climateForecast`;
+    const timestamp = parseFloat(beforeDate);
+    const today = new Date(timestamp * 1000);
+    const date = new Date(today.getTime() + (24 * 60 * 60 * 1000));
+    const params = {
+      place,
+      date,
+    };
+
+    return new Promise((resolve) => {
+      axios.get(URL, { params })
+        .then((response) => {
+          resolve(response.data);
+        }).catch((err) => {
+          resolve(err.response.data);
+        });
+    });
+  },
+
+  getAllSports: (intent) => {
+    const URL = `${global.URL_SPORT}/${intent}`;
+
+    return new Promise((resolve) => {
+      axios.get(URL)
+        .then((response) => {
+          resolve(response.data);
+        }).catch((err) => {
+          resolve(err.response.data);
+        });
+    });
+  },
 };
