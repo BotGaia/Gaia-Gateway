@@ -40,16 +40,10 @@ module.exports = {
     const URL = `${global.URL_SPORT}/createNotification`;
     const dataJson = json;
     const daysArray = [];
-    const localsArray = [];
 
     if (typeof dataJson.days !== 'object') {
       daysArray.push(dataJson.days);
       dataJson.days = daysArray;
-    }
-
-    if (typeof dataJson.locals !== 'object') {
-      localsArray.push(dataJson.locals);
-      dataJson.locals = localsArray;
     }
 
     dataJson.days = notification.convertDay(dataJson.days);
@@ -57,7 +51,6 @@ module.exports = {
     dataJson.minutesBefore = notification.convertTimeBefore(dataJson.minutesBefore);
     dataJson.hour = parseInt(dataJson.hour, 10);
     dataJson.minutes = parseInt(dataJson.minutes, 10);
-
     axios.post(URL, dataJson).then((res) => {
       resolve(res.data);
     }).catch(() => {
@@ -65,11 +58,11 @@ module.exports = {
     });
   }),
 
-  deleteNotification: (telegramId, userChoice) => {
+  deleteNotification: (id, number) => {
     const URL = `${global.URL_SPORT}/deleteNotification`;
     const params = {
-      id: telegramId,
-      number: userChoice,
+      id,
+      number,
     };
 
     return new Promise((resolve) => {
@@ -77,15 +70,15 @@ module.exports = {
         .then((response) => {
           resolve(response.data);
         }).catch((err) => {
-          resolve(err.response.data);
+          resolve(err.code);
         });
     });
   },
 
-  getNotification: (telegramId) => {
+  getNotification: (id) => {
     const URL = `${global.URL_SPORT}/userNotification`;
     const params = {
-      id: telegramId,
+      id,
     };
 
     return new Promise((resolve) => {
@@ -93,7 +86,7 @@ module.exports = {
         .then((response) => {
           resolve(response.data);
         }).catch((err) => {
-          resolve(err.response.data);
+          resolve(err.code);
         });
     });
   },

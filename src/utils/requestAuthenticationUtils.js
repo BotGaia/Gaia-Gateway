@@ -19,7 +19,7 @@ module.exports = {
     let errorMessage = '';
     const parameters = ['telegramId',
       'hoursBefore', 'minutesBefore',
-      'hour', 'minutes', 'sport', 'locals'];
+      'hour', 'minutes', 'sport', 'local'];
 
     parameters.forEach((value) => {
       const bodyType = typeof (body[value]);
@@ -105,7 +105,7 @@ module.exports = {
     const bodyType = typeof (body.telegramId);
 
     if (bodyType !== params.type) {
-      if (typeof (params.id) === 'undefined') {
+      if (typeof (params.telegramId) === 'undefined') {
         errorMessage = `${errorMessage}BodyError: Missing property '${params.telegramId}'\n`;
       } else {
         errorMessage = `${errorMessage}BodyError: '${params.telegramId}' should be ${params.type}, but is actually a ${typeof (bodyType)}.\n`;
