@@ -26,21 +26,21 @@ function recommendSport(conditions, notification) {
     case 'favorable':
       partOne = `As condições metereológicas previstas para ${notification.date.getDate()}/`;
       partTwo = `${notification.date.getMonth() + 1} em ${notification.local} estão favoráveis`;
-      partThree = `para a prática de ${notification.sport}.\n\n`;
+      partThree = ` para a prática de ${notification.sport}.\n\n`;
       return `${partOne}${partTwo}${partThree}`;
     case 'reservation':
       partOne = `Algumas condições metereológicas previstas para ${notification.date.getDate()}/`;
       partTwo = `${notification.date.getMonth() + 1} em ${notification.local} estão favoráveis`;
-      partThree = `para a prática de ${notification.sport}.\n\n`;
+      partThree = ` para a prática de ${notification.sport}.\n\n`;
       return `${partOne}${partTwo}${partThree}`;
     case 'alert':
       partOne = `Poucas condições metereológicas previstas para ${notification.date.getDate()}/`;
       partTwo = `${notification.date.getMonth() + 1} em ${notification.local} estão favoráveis`;
-      partThree = `para a prática de ${notification.sport}.\n\n`;
+      partThree = ` para a prática de ${notification.sport}.\n\n`;
       return `${partOne}${partTwo}${partThree}`;
     case 'not':
       partOne = `Para ${notification.date.getDate()}/${notification.date.getMonth() + 1} em ${notification.local}`;
-      partTwo = `não é recomendada prática de ${notification.sport}.\n\n`;
+      partTwo = ` não é recomendada prática de ${notification.sport}.\n\n`;
       return `${partOne}${partTwo}`;
     default:
       return 'error';
@@ -51,7 +51,7 @@ function setClimateMessages(messages, conditions) {
   messages.push(`Para essa data, neste local, minha temperatura é ${conditions.weather.temperature} °C,`);
   messages.push(` com umidade de ${conditions.weather.humidity}%`);
   messages.push(` e pressão ${conditions.weather.pressure} atm.`);
-  messages.push(`Meus ventos sopram para ${conditions.weather.windyDegrees},`);
+  messages.push(` Meus ventos sopram para ${conditions.weather.windyDegrees},`);
   messages.push(` com velocidade de ${conditions.weather.windySpeed} m/s`);
   messages.push(` e apresento ${conditions.weather.sky}.`);
 }

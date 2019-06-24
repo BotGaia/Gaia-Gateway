@@ -46,7 +46,11 @@ module.exports = {
       dataJson.days = daysArray;
     }
 
-    dataJson.days = notification.convertDay(dataJson.days);
+    if ((json.days[0][0] === 'T' && json.days[0][1] === 'o') || (json.days[0][0] === 't' && json.days[0][1] === 'o')) {
+      dataJson.days = [0, 1, 2, 3, 4, 5, 6];
+    } else {
+      dataJson.days = notification.convertDay(dataJson.days);
+    }
     dataJson.hoursBefore = notification.convertTimeBefore(dataJson.hoursBefore);
     dataJson.minutesBefore = notification.convertTimeBefore(dataJson.minutesBefore);
     dataJson.hour = parseInt(dataJson.hour, 10);
