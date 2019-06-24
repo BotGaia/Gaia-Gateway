@@ -91,13 +91,14 @@ module.exports = {
     });
   },
 
-  getClimateForecast: (place, hour) => {
+  getClimateForecast: (place, hours) => {
     const URL = `${global.URL_SPORT}/climateForecast`;
     const today = new Date();
     const tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000));
     let day = tomorrow.getDate().toString();
     let month = (tomorrow.getMonth() + 1).toString();
     const year = tomorrow.getFullYear().toString();
+    let hour = hours;
 
     if (day.length < 2) {
       day = `0${day}`;
@@ -108,8 +109,8 @@ module.exports = {
     if (hour.length < 2) {
       hour = `0${hour}`;
     }
-    const date = year + '-' + month + '-' + day + 'T' + hour + ':' + '00:00.000Z';
-    
+    const date = `${year}-${month}-${day}T${hour}:00:00.000Z`;
+
     const params = {
       place,
       date,

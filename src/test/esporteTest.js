@@ -279,4 +279,43 @@ describe('Esporte', () => {
       done();
     });
   });
+
+  it('should get a list of all sports', (done) => {
+    esporte.getAllSports().then((res) => {
+      res.should.be.a('Array');
+      res[0].should.have.property('name');
+      res[0].should.have.property('class').eql('sport');
+      done();
+    });
+  });
+
+  it('should get a forecast weather', (done) => {
+    const today = new Date();
+    const tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000));
+    let day = tomorrow.getDate().toString();
+    let month = (tomorrow.getMonth() + 1).toString();
+    const year = tomorrow.getFullYear().toString();
+    if (day.length < 2) {
+      day = `0${day}`;
+    }
+    if (month.length < 2) {
+      month = `0${month}`;
+    }
+    chai.request(app).get(`/climateForecast?place=brasilia&date=${year}-${month}-${day}T01%3A27`);
+    const params = {
+      place: 'brasilia',
+      date: `${year}-${month}-${day}T01%3A27`,
+    };
+    const getResponse = {
+      data: 'Notificação excluída.',
+    };
+
+    getStub.withArgs(`${global.URL_SPORT}/climateForecast`, { params })
+      .resolves(getResponse);
+
+    esporte.getClimateForecast('553888617', '0').then((res) => {
+      res.should.not.be.a('String');
+      done();
+    });
+  });
 });
