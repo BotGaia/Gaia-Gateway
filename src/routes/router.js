@@ -99,14 +99,12 @@ router.post('/ciclone', (req, res) => {
 
 router.post('/', (req, res) => {
   const notifyAuthenticationResponse = authentication.notifyAuthentication(req.body);
-  const notificationAuthenticationResponse = authentication.notificationAuthentication(req.body);
-  if ((!(notifyAuthenticationResponse || notificationAuthenticationResponse))
-    || (!notifyAuthenticationResponse && req.body.cyclones)) {
+  if (!(notifyAuthenticationResponse)) {
     notify.sendNotification(req.body).then((response) => {
       res.json(response);
     });
   } else {
-    res.end(`${notificationAuthenticationResponse}${notifyAuthenticationResponse}`);
+    res.end(`${notifyAuthenticationResponse}`);
   }
 });
 
