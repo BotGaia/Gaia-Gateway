@@ -286,7 +286,7 @@ describe('Esporte', () => {
 
     getStub.resolves(getResponse);
 
-    esporte.getClimateForecast('forecast', '14').then((res) => {
+    esporte.getClimateForecast('forecast').then((res) => {
       res.should.be.a('Object');
       res.should.have.property('date');
       done();
