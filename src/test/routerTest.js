@@ -246,13 +246,13 @@ describe('Esporte Router', () => {
           {
             upperLimit: '24',
             lowerLimit: '15',
-          }
+          },
         ],
         humidity: [
           {
             upperLimit: '70',
             lowerLimit: '21',
-          }
+          },
         ],
         windSpeed: [
           {
@@ -262,7 +262,7 @@ describe('Esporte Router', () => {
           {
             upperLimit: '25.7',
             lowerLimit: '15.934',
-          }
+          },
         ],
         _id: '5d116991013cd7001e5e8ee8',
         name: 'Kitesurf',
@@ -272,7 +272,6 @@ describe('Esporte Router', () => {
 
     chai.request(app).get('/esporte')
       .query({ intent: 'allSports' }).end((err, res) => {
-        console.log('response: ' + res)
         res.should.have.status(200);
         res.body.should.be.a('Array');
         res.body[0].should.have.property('temperature');
