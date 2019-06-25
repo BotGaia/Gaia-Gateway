@@ -3,8 +3,8 @@ module.exports = {
     let errorMessage = '';
 
     if (query.intent) {
-      if ((query.intent !== 'sports') && (query.intent !== 'climate') && (query.intent !== 'delete') && (query.intent !== 'show')) {
-        errorMessage = `${errorMessage}IntentError: Expected Intent to be equal to 'sports' or 'climate' or 'delete' or 'show', but instead got '${query.intent}'.\n`;
+      if ((query.intent !== 'sports') && (query.intent !== 'climate') && (query.intent !== 'delete') && (query.intent !== 'show') && (query.intent !== 'forecast') && (query.intent !== 'allSports')) {
+        errorMessage = `${errorMessage}IntentError: Expected Intent to be equal to 'sports' or 'climate' or 'delete' or 'show' or 'forecast' or 'allSports, but instead got '${query.intent}'.\n`;
       }
     }
 

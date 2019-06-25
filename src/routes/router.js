@@ -23,9 +23,17 @@ router.get('/esporte', (req, res) => {
       esporte.getClimate(req.query.intent, req.query.place).then((climateJson) => {
         res.json(climateJson);
       });
+    } else if (req.query.intent === 'allSports') {
+      esporte.getAllSports(req.query.intent).then((allSports) => {
+        res.json(allSports);
+      });
     } else if (req.query.place && req.query.intent === 'sports') {
       esporte.getClimate(req.query.intent, req.query.place).then((climateJson) => {
         res.json(climateJson);
+      });
+    } else if (req.query.place && req.query.intent === 'forecast') {
+      esporte.getClimateForecast(req.query.place).then((forecastJson) => {
+        res.json(forecastJson);
       });
     } else if (req.query.id) {
       if (req.query.number) {

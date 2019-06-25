@@ -227,6 +227,72 @@ describe('Esporte', () => {
     });
   });
 
+  it('should get a list of all sports', (done) => {
+    const getResponse = {
+      data: [
+        {
+          temperature: [
+            {
+              upperLimit: '24',
+              lowerLimit: '15',
+            },
+          ],
+          humidity: [
+            {
+              upperLimit: '70',
+              lowerLimit: '21',
+            },
+          ],
+          windSpeed: [
+            {
+              upperLimit: '10.28',
+              lowerLimit: '0',
+            },
+            {
+              upperLimit: '25.7',
+              lowerLimit: '15.934',
+            },
+          ],
+          _id: '5d116991013cd7001e5e8ee8',
+          name: 'Kitesurf',
+          class: 'sport',
+          __v: 0,
+        }],
+    };
+    getStub.withArgs(`${global.URL_SPORT}/allSports`)
+      .resolves(getResponse);
+
+    esporte.getAllSports('allSports').then((res) => {
+      res.should.be.a('Array');
+      res[0].should.have.property('temperature');
+      done();
+    });
+  });
+
+  it('should get a forecast weather', (done) => {
+    const getResponse = {
+      data: {
+        date: 'quarta-feira 18:00:00',
+        sky: 'céu nublado',
+        temperature: '28.25',
+        pressure: '1.00',
+        windyDegrees: 'norte',
+        windySpeed: '1.55',
+        temperatureMax: '28.25',
+        temperatureMin: '28.25',
+        humidity: '46',
+      },
+    };
+
+    getStub.resolves(getResponse);
+
+    esporte.getClimateForecast('forecast').then((res) => {
+      res.should.be.a('Object');
+      res.should.have.property('date');
+      done();
+    });
+  });
+
   it('should not get climate information', (done) => {
     getStub.restore();
 
