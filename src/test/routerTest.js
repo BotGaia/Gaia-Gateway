@@ -94,6 +94,8 @@ describe('Esporte Router', () => {
     esporteStub.postNotification.restore();
     esporteStub.deleteNotification.restore();
     esporteStub.getNotification.restore();
+    esporteStub.getClimateForecast.restore();
+    esporteStub.getAllSports.restore();
   });
 
   it('should return a locations list', (done) => {
@@ -211,6 +213,69 @@ describe('Esporte Router', () => {
       .query({ intent: 'trueintent', place: 'brasilia' }).end((err, res) => {
         res.should.have.status(200);
         res.text.should.be.a('String');
+        done();
+      });
+  });
+
+  it('should return forecast information', (done) => {
+    esporteStub.getClimateForecast.resolves({
+      date: 'quarta-feira 18:00:00',
+      sky: 'céu nublado',
+      temperature: '28.25',
+      pressure: '1.00',
+      windyDegrees: 'norte',
+      windySpeed: '1.55',
+      temperatureMax: '28.25',
+      temperatureMin: '28.25',
+      humidity: '46',
+    });
+
+    chai.request(app).get('/esporte')
+      .query({ intent: 'forecast', place: 'brasilia', hour: '14' }).end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a('Object');
+        res.body.should.have.property('date');
+        done();
+      });
+  });
+
+  it('should return all sports', (done) => {
+    esporteStub.getAllSports.resolves([
+      {
+        temperature: [
+          {
+            upperLimit: '24',
+            lowerLimit: '15',
+          }
+        ],
+        humidity: [
+          {
+            upperLimit: '70',
+            lowerLimit: '21',
+          }
+        ],
+        windSpeed: [
+          {
+            upperLimit: '10.28',
+            lowerLimit: '0',
+          },
+          {
+            upperLimit: '25.7',
+            lowerLimit: '15.934',
+          }
+        ],
+        _id: '5d116991013cd7001e5e8ee8',
+        name: 'Kitesurf',
+        class: 'sport',
+        __v: 0,
+      }]);
+
+    chai.request(app).get('/esporte')
+      .query({ intent: 'allSports' }).end((err, res) => {
+        console.log('response: ' + res)
+        res.should.have.status(200);
+        res.body.should.be.a('Array');
+        res.body[0].should.have.property('temperature');
         done();
       });
   });
