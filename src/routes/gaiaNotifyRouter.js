@@ -67,10 +67,12 @@ function setCycloneMessage(target) {
     }
   });
 
+  const beginDate = new Date(cyclone.startDate).toLocaleString('pt-BR');
+
   return `Nome: ${cyclone.name}\nBacia de Origem: ${cyclone.originBasin}
-Bacia Atual: ${cyclone.currentBasin}\nData de início: ${cyclone.startDate}
+Bacia Atual: ${cyclone.currentBasin}\nData de início: ${beginDate}
 Data de fim: ${cyclone.endDate}\nTipo de tempestade: ${cyclone.stormType}
-Velocidade dos ventos: ${cyclone.windSpeed} m/s\n\n`;
+Velocidade dos ventos: ${cyclone.windSpeed.toFixed(2)} m/s\n\n`;
 }
 
 module.exports = {
